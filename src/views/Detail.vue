@@ -1,8 +1,7 @@
 <template>
-  <div>
+  <Layout>
     de
-    <Nav/>
-  </div>
+  </Layout>
 </template>
 
 <script lang="ts">
@@ -11,7 +10,3 @@ export default {
   name: 'Detail',
 };
 </script>
-
-<style lang="scss" scoped>
-
-</style>
