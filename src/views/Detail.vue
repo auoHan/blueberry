@@ -1,6 +1,6 @@
 <template>
   <Layout>
-    de
+
   </Layout>
 </template>
 
@@ -10,3 +10,7 @@ export default {
   name: 'Detail',
 };
 </script>
+
+<style lang="scss" scoped>
+
+</style>
