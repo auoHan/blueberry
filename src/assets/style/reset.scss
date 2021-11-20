@@ -10,7 +10,11 @@ a{
 li{
   list-style: none;
 }
-button{
+button,input{
   border:none;
   background: inherit;
+  font: inherit;
+}
+:focus{
+  outline: none;
 }

@@ -38,7 +38,7 @@ nav {
     padding-bottom: 4px;
   }
   > .item.selected{
-    color: $color-highlight;
+    color: $color-highLight;
   }
   .icon{
     width: 26px;
