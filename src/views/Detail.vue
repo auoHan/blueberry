@@ -1,6 +1,6 @@
 <template>
   <Layout>
-112
+    123
   </Layout>
 </template>
 
@@ -8,6 +8,11 @@
 
 export default {
   name: 'Detail',
+  data(){
+    return {
+
+    }
+  }
 };
 </script>
 

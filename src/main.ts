@@ -6,6 +6,7 @@ import store from './store'
 import Nav from '@/components/Footer.vue';
 import Layout from '@/components/Layout.vue';
 import Icon from '@/components/Icon.vue';
+import 'animate.css'
 
 Vue.config.productionTip = false
 Vue.component('Nav',Nav)

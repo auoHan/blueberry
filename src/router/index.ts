@@ -14,7 +14,7 @@ const routes: Array<RouteConfig> = [
   },
   {
     path:'/detail',
-    component:Detail
+    component:Detail,
   },
   {
     path:'/money',
@@ -22,7 +22,8 @@ const routes: Array<RouteConfig> = [
   },
   {
     path:'/statistics',
-    component:Statistics
+    component:Statistics,
+
   },
   {
     path:'*',

@@ -1,18 +1,18 @@
 <template>
-  <nav>
+  <footer>
     <router-link to="/detail" class="item" active-class="selected">
-      <Icon iconName="detail" class="icon"/>
+      <Icon icon-name="detail" class="icon"/>
       明细
     </router-link>
     <router-link to="/money" class="item" active-class="selected">
-      <Icon iconName="money" class="icon"/>
+      <Icon icon-name="money" class="icon"/>
       记账
     </router-link>
     <router-link to="/statistics" class="item" active-class="selected">
-      <Icon iconName="statistics" class="icon"/>
+      <Icon icon-name="statistics" class="icon"/>
       统计
     </router-link>
-  </nav>
+  </footer>
 </template>
 
 <script lang="ts">
@@ -23,7 +23,7 @@ export default {
 
 <style lang="scss" scoped>
 @import "~@/assets/style/helper.scss";
-nav {
+footer {
   display: flex;
   flex-direction: row;
   box-shadow: 0 0 3px 0 rgba(0, 0, 0, .2);
