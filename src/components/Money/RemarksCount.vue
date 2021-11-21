@@ -13,24 +13,37 @@
       <span class="sum">10000000</span>
     </div>
     <!-- 计算 -->
-    <div class="buttons" >
-      <button v-for="(number,index) in numbers" :key="index" :class="index===activeClass && 'selected'" @mousedown="addClass(index)" @mouseup="addClass(-1)" @touchstart="addClass(index)" >{{number}}</button>
+    <div class="buttons">
+      <button v-for="(number,index) in numbers"
+              :key="index"
+              :class="index===activeClass && 'selected'"
+              @mousedown="addClass(index)"
+              @mouseup="addClass(-1)"
+              @touchstart="addClass(index)"
+              @touchend="addClass(-1)"
 
+      >
+        <Icon icon-name="日历" class="today" v-if="index===3"/>
+        <Icon icon-name="backspace" class="backspace" v-if="index===14"/>
+        {{ number }}
+      </button>
       <button>完成</button>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component } from 'vue-property-decorator'
+import Vue from 'vue';
+import {Component} from 'vue-property-decorator';
+
 @Component
-export default class RemarksCount extends Vue{
+export default class RemarksCount extends Vue {
   output = '';
   activeClass = -1;
-  numbers = [1,2,3,'今天',4,5,6,'+',7,8,9,'-',0,'.',''];
-  addClass(index: number){
-    this.activeClass = index
+  numbers = [1, 2, 3, '今天', 4, 5, 6, '+', 7, 8, 9, '-', 0, '.', ''];
+
+  addClass(index: number) {
+    this.activeClass = index;
   }
 
 }
@@ -38,10 +51,9 @@ export default class RemarksCount extends Vue{
 
 <style lang="scss" scoped>
 @import "~@/assets/style/helper.scss";
+
 .remarks-count {
   background-color: $color-notSelected;
-  width: 100%;
-  display: block;
 
   > .remarks {
     position: relative;
@@ -53,7 +65,7 @@ export default class RemarksCount extends Vue{
       display: flex;
       flex-direction: row;
       align-items: center;
-      width: 100vh;
+
 
       > span {
 
