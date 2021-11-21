@@ -41,7 +41,12 @@
 
 <script lang="ts">
 export default {
-name: "RemarksCount"
+name: "RemarksCount",
+  data() {
+    return {
+
+    }
+  },
 }
 </script>
 

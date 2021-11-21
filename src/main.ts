@@ -8,6 +8,8 @@ import Layout from '@/components/Layout.vue';
 import Icon from '@/components/Icon.vue';
 import 'animate.css'
 
+export const eventBus = new Vue()
+
 Vue.config.productionTip = false
 Vue.component('Nav',Nav)
 Vue.component('Layout',Layout)

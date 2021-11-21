@@ -26,206 +26,25 @@
         <Icon icon-name="eat" class="tags-icon"></Icon>
         <span>餐饮</span>
       </li>
-
-
-      <li>
-        <Icon icon-name="eat" class="tags-icon selected"></Icon>
-        <span class="selected">餐饮</span>
-      </li>
-      <li>
-        <Icon icon-name="eat" class="tags-icon"></Icon>
-        <span>餐饮</span>
-      </li>
-      <li>
-        <Icon icon-name="eat" class="tags-icon"></Icon>
-        <span>餐饮</span>
-      </li>
-      <li>
-        <Icon icon-name="eat" class="tags-icon"></Icon>
-        <span>餐饮</span>
-      </li>
-      <li>
-        <Icon icon-name="eat" class="tags-icon"></Icon>
-        <span>餐饮</span>
-      </li>
-      <li>
-        <Icon icon-name="eat" class="tags-icon"></Icon>
-        <span>餐饮</span>
-      </li>
-      <li>
-        <Icon icon-name="eat" class="tags-icon selected"></Icon>
-        <span class="selected">餐饮</span>
-      </li>
-      <li>
-        <Icon icon-name="eat" class="tags-icon"></Icon>
-        <span>餐饮</span>
-      </li>
-      <li>
-        <Icon icon-name="eat" class="tags-icon"></Icon>
-        <span>餐饮</span>
-      </li>
-      <li>
-        <Icon icon-name="eat" class="tags-icon"></Icon>
-        <span>餐饮</span>
-      </li>
-      <li>
-        <Icon icon-name="eat" class="tags-icon"></Icon>
-        <span>餐饮</span>
-      </li>
-      <li>
-        <Icon icon-name="eat" class="tags-icon"></Icon>
-        <span>餐饮</span>
-      </li>
-      <li>
-        <Icon icon-name="eat" class="tags-icon selected"></Icon>
-        <span class="selected">餐饮</span>
-      </li>
-      <li>
-        <Icon icon-name="eat" class="tags-icon"></Icon>
-        <span>餐饮</span>
-      </li>
-      <li>
-        <Icon icon-name="eat" class="tags-icon"></Icon>
-        <span>餐饮</span>
-      </li>
-      <li>
-        <Icon icon-name="eat" class="tags-icon"></Icon>
-        <span>餐饮</span>
-      </li>
-      <li>
-        <Icon icon-name="eat" class="tags-icon"></Icon>
-        <span>餐饮</span>
-      </li>
-      <li>
-        <Icon icon-name="eat" class="tags-icon"></Icon>
-        <span>餐饮</span>
-      </li>
-      <li>
-        <Icon icon-name="eat" class="tags-icon selected"></Icon>
-        <span class="selected">餐饮</span>
-      </li>
-      <li>
-        <Icon icon-name="eat" class="tags-icon"></Icon>
-        <span>餐饮</span>
-      </li>
-      <li>
-        <Icon icon-name="eat" class="tags-icon"></Icon>
-        <span>餐饮</span>
-      </li>
-      <li>
-        <Icon icon-name="eat" class="tags-icon"></Icon>
-        <span>餐饮</span>
-      </li>
-      <li>
-        <Icon icon-name="eat" class="tags-icon"></Icon>
-        <span>餐饮</span>
-      </li>
-      <li>
-        <Icon icon-name="eat" class="tags-icon"></Icon>
-        <span>餐饮</span>
-      </li>
-      <li>
-        <Icon icon-name="eat" class="tags-icon"></Icon>
-        <span>餐饮</span>
-      </li>
-      <li>
-        <Icon icon-name="eat" class="tags-icon"></Icon>
-        <span>餐饮</span>
-      </li>
-      <li>
-        <Icon icon-name="eat" class="tags-icon"></Icon>
-        <span>餐饮</span>
-      </li>
-      <li>
-        <Icon icon-name="eat" class="tags-icon"></Icon>
-        <span>餐饮</span>
-      </li>
-      <li>
-        <Icon icon-name="eat" class="tags-icon"></Icon>
-        <span>餐饮</span>
-      </li>
-      <li>
-        <Icon icon-name="eat" class="tags-icon"></Icon>
-        <span>餐饮</span>
-      </li>
-      <li>
-        <Icon icon-name="eat" class="tags-icon"></Icon>
-        <span>餐饮</span>
-      </li>
-      <li>
-        <Icon icon-name="eat" class="tags-icon"></Icon>
-        <span>餐饮</span>
-      </li>
-      <li>
-        <Icon icon-name="eat" class="tags-icon"></Icon>
-        <span>餐饮</span>
-      </li>
-      <li>
-        <Icon icon-name="eat" class="tags-icon"></Icon>
-        <span>餐饮</span>
-      </li>
-      <li>
-        <Icon icon-name="eat" class="tags-icon selected"></Icon>
-        <span class="selected">餐饮</span>
-      </li>
-      <li>
-        <Icon icon-name="eat" class="tags-icon"></Icon>
-        <span>餐饮</span>
-      </li>
-      <li>
-        <Icon icon-name="eat" class="tags-icon"></Icon>
-        <span>餐饮</span>
-      </li>
-      <li>
-        <Icon icon-name="eat" class="tags-icon"></Icon>
-        <span>餐饮</span>
-      </li>
-      <li>
-        <Icon icon-name="eat" class="tags-icon"></Icon>
-        <span>餐饮</span>
-      </li>
-      <li>
-        <Icon icon-name="eat" class="tags-icon"></Icon>
-        <span>餐饮</span>
-      </li>
-      <li>
-        <Icon icon-name="eat" class="tags-icon selected"></Icon>
-        <span class="selected">餐饮</span>
-      </li>
-      <li>
-        <Icon icon-name="eat" class="tags-icon"></Icon>
-        <span>餐饮</span>
-      </li>
-      <li>
-        <Icon icon-name="eat" class="tags-icon"></Icon>
-        <span>餐饮</span>
-      </li>
-      <li>
-        <Icon icon-name="eat" class="tags-icon"></Icon>
-        <span>餐饮</span>
-      </li>
-      <li>
-        <Icon icon-name="eat" class="tags-icon"></Icon>
-        <span>餐饮</span>
-      </li>
-      <li>
-        <Icon icon-name="eat" class="tags-icon"></Icon>
-        <span>餐饮</span>
-      </li>
-
-
     </ul>
   </div>
 </template>
 
 <script lang="ts">
+
 export default {
-name: "Tags"
-}
+  name: 'Tags',
+  data() {
+    return {
+
+    };
+  }
+};
 </script>
 
 <style lang="scss" scoped>
 @import "~@/assets/style/helper.scss";
+
 .tags {
   padding: 16px 16px;
   flex: 1;
