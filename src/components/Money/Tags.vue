@@ -31,15 +31,19 @@
 </template>
 
 <script lang="ts">
+import Vue from 'vue';
+import {Component} from 'vue-property-decorator';
 
-export default {
-  name: 'Tags',
-  data() {
-    return {
+const event = new Vue();
+@Component
+export default class Tags extends Vue {
+  countShow = true;
 
-    };
-  }
-};
+  /*send() {
+    event.$emit('count-show', this.countShow);
+  }*/
+
+}
 </script>
 
 <style lang="scss" scoped>

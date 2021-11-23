@@ -1,7 +1,7 @@
 <template>
   <!-- 计算备注 -->
-  <div class="remarks-count">
-    <DatePicker class="date-picker" v-if="dateShow" @date-picker="datePicker" />
+  <div class="remarks-count" v-if="countShow">
+    <DatePicker class="date-picker" v-if="dateShow" @date-picker="datePicker"/>
     <!-- 备注 -->
     <div class="remarks">
       <label class="notes">
@@ -29,7 +29,20 @@
         <Icon icon-name="backspace" class="backspace-icon" v-if="index===14"/>
         {{ number }}
       </button>
-      <button v-if="sum.indexOf('+')!==-1 || sum.indexOf('-')!==-1 ">=</button>
+      <button v-if="(sum.charAt(sum.length-1)==='0'
+      || sum.charAt(sum.length-1)==='1'
+      || sum.charAt(sum.length-1)==='2'
+      || sum.charAt(sum.length-1)==='3'
+      || sum.charAt(sum.length-1)==='4'
+      || sum.charAt(sum.length-1)==='5'
+      || sum.charAt(sum.length-1)==='6'
+      || sum.charAt(sum.length-1)==='7'
+      || sum.charAt(sum.length-1)==='8'
+      || sum.charAt(sum.length-1)==='9'
+      )
+      && (sum.indexOf('+')!==-1
+          || sum.indexOf('-')!==-1)">=
+      </button>
       <button v-else>完成</button>
     </div>
   </div>
@@ -40,6 +53,7 @@ import Vue from 'vue';
 import {Component} from 'vue-property-decorator';
 import DatePicker from '@/components/Money/DatePicker.vue';
 
+const event = new Vue();
 @Component({
   components: {DatePicker}
 })
@@ -47,13 +61,23 @@ export default class RemarksCount extends Vue {
   sum = '0';
   activeClass = -1;
   dateShow = false;
+  countShow = true;
   numbers = [1, 2, 3, '今天', 4, 5, 6, '+', 7, 8, 9, '-', 0, '.', ''];
   currentDate = new Date();
   dateSelected = this.dateFormat(this.currentDate);
+
+  /*mounted():void{//在模板编译完成后执行
+    event.$on('count-show',countShow => {
+      console.log(countShow);
+      this.countShow= countShow;//箭头函数内部不会产生新的this，这边如果不用=>,this指代Event
+    })
+  }*/
+
   //鼠标点击或者手指按压按钮，改变当前按钮样式，其他按钮不变
   addActiveClass(index: number) {
     this.activeClass = index;
   }
+
   //子组件传来的方法，子组件点完取消或确定，立马将父组件里的todayShow变为false
   datePicker(event: any) {
     if (event instanceof Array) {
@@ -63,10 +87,10 @@ export default class RemarksCount extends Vue {
       * 此处也是，子组件点完确定，立马改变判断时间是否相同，不同则改变numbers数组，
       * 在按钮中写类似逻辑有BUG，需要第二次点才生效
       * */
-      if (this.dateSelected !== this.dateFormat(this.currentDate)){
-        this.numbers.splice(3,1,this.dateSelected)
-      }else {
-        this.numbers = [1, 2, 3, '今天', 4, 5, 6, '+', 7, 8, 9, '-', 0, '.', '']
+      if (this.dateSelected !== this.dateFormat(this.currentDate)) {
+        this.numbers.splice(3, 1, this.dateSelected);
+      } else {
+        this.numbers = [1, 2, 3, '今天', 4, 5, 6, '+', 7, 8, 9, '-', 0, '.', ''];
       }
       console.log(this.dateSelected);
     } else {
@@ -74,20 +98,22 @@ export default class RemarksCount extends Vue {
     }
 
   }
+
   //改变当前时间的格式
   dateFormat(time: string | number | Date) {
-    let nowDate=new Date(time);
-    let year=nowDate.getFullYear();
+    let nowDate = new Date(time);
+    let year = nowDate.getFullYear();
     /* 在日期格式中，月份是从0开始的，因此要加0
      * 使用三元表达式在小于10的前面加0，以达到格式统一  如 09:11:05
      * */
-    let month= nowDate.getMonth()+1<10 ? "0"+(nowDate.getMonth()+1) : nowDate.getMonth()+1;
-    let day=nowDate.getDate()<10 ? "0"+nowDate.getDate() : nowDate.getDate();
+    let month = nowDate.getMonth() + 1 < 10 ? '0' + (nowDate.getMonth() + 1) : nowDate.getMonth() + 1;
+    let day = nowDate.getDate() < 10 ? '0' + nowDate.getDate() : nowDate.getDate();
     // 拼接
-    return year+"/"+month+"/"+day;
+    return year + '/' + month + '/' + day;
   }
+
   //除了完成按钮之外的按钮逻辑
-  buttons(number: number | string | null,index:number) {
+  buttons(number: number | string | null, index: number) {
     if (index === 3) {
       this.dateShow = true;
     } else if (number === '.') {
@@ -114,7 +140,7 @@ export default class RemarksCount extends Vue {
         this.sum += number;
       }
       if (this.sum.charAt(this.sum.length - 1) === '-') {
-        this.sum = this.sum.replace(/[-]$/, '+');
+        this.sum = this.sum.replace(/-$/, '+');
       }
     } else if (number === '-') {
       if (this.sum.charAt(this.sum.length - 1) !== '+'
