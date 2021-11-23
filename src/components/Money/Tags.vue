@@ -2,29 +2,13 @@
   <!-- 标签显示 -->
   <div class="tags">
     <ul class="current">
-      <li>
-        <Icon icon-name="eat" class="tags-icon selected"></Icon>
-        <span class="selected">餐饮</span>
+      <li v-for="(tagName,index) in tagIcons" :key="index" @click="addActiveClass(index)">
+        <Icon :icon-name="tagName" class="tags-icon" :class="index===activeClass && 'selected'" />
+        <span :class="index===activeClass && 'selected'">{{tagName}}</span>
       </li>
-      <li>
-        <Icon icon-name="eat" class="tags-icon"></Icon>
-        <span>餐饮</span>
-      </li>
-      <li>
-        <Icon icon-name="eat" class="tags-icon"></Icon>
-        <span>餐饮</span>
-      </li>
-      <li>
-        <Icon icon-name="eat" class="tags-icon"></Icon>
-        <span>餐饮</span>
-      </li>
-      <li>
-        <Icon icon-name="eat" class="tags-icon"></Icon>
-        <span>餐饮</span>
-      </li>
-      <li>
-        <Icon icon-name="eat" class="tags-icon"></Icon>
-        <span>餐饮</span>
+      <li @click="addTags">
+        <Icon icon-name="添加" class="tags-icon" />
+        <span>添加</span>
       </li>
     </ul>
   </div>
@@ -33,15 +17,22 @@
 <script lang="ts">
 import Vue from 'vue';
 import {Component} from 'vue-property-decorator';
-
-const event = new Vue();
+import { eventBus } from '@/main';
 @Component
 export default class Tags extends Vue {
-  countShow = true;
-
-  /*send() {
-    event.$emit('count-show', this.countShow);
-  }*/
+  countShow = false;
+  activeClass = -1;
+  tagIcons = ['餐饮','交通','日用','水果','蔬菜','购物'];
+  //点击li后添加样式，并传参给RemarksCount组件，控制RemarksCount组件是否显示
+  addActiveClass(index: number) {
+    this.activeClass = index;
+    this.countShow = true;
+    eventBus.$emit('count-show', this.countShow);
+  }
+  //添加标签跳转路由
+  addTags(){
+    this.$router.push({ path: '/tags' });
+  }
 
 }
 </script>
@@ -70,7 +61,7 @@ export default class Tags extends Vue {
       max-width: 25%;
 
       > span {
-        font-size: 12px;
+        font-size: 14px;
 
         &.selected {
           color: $color-highLight;

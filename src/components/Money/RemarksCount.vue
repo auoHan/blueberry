@@ -9,7 +9,7 @@
               <Icon icon-name="备注" class="note-icon"/>
               备注:
             </span>
-        <input type="text" placeholder="点击写备注...">
+        <input type="text" placeholder="点击写备注..." v-model="value"/>
       </label>
       <span class="sum">{{ sum }}</span>
     </div>
@@ -52,8 +52,7 @@
 import Vue from 'vue';
 import {Component} from 'vue-property-decorator';
 import DatePicker from '@/components/Money/DatePicker.vue';
-
-const event = new Vue();
+import { eventBus } from '@/main'
 @Component({
   components: {DatePicker}
 })
@@ -61,17 +60,20 @@ export default class RemarksCount extends Vue {
   sum = '0';
   activeClass = -1;
   dateShow = false;
-  countShow = true;
+  countShow = false;
+  value = '';
   numbers = [1, 2, 3, '今天', 4, 5, 6, '+', 7, 8, 9, '-', 0, '.', ''];
   currentDate = new Date();
   dateSelected = this.dateFormat(this.currentDate);
 
-  /*mounted():void{//在模板编译完成后执行
-    event.$on('count-show',countShow => {
+  //在实例初始化之后,侦听Tags组件传来的值
+  beforeCreate():void{
+    console.log(eventBus);
+    eventBus.$on('count-show',(countShow: boolean) => {
       console.log(countShow);
-      this.countShow= countShow;//箭头函数内部不会产生新的this，这边如果不用=>,this指代Event
+      this.countShow= countShow;//箭头函数内部不会产生新的this，这边如果不用=>,this指代eventBus
     })
-  }*/
+  }
 
   //鼠标点击或者手指按压按钮，改变当前按钮样式，其他按钮不变
   addActiveClass(index: number) {
