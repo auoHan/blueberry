@@ -47,9 +47,7 @@ export default class Today extends Vue {
     let month= val.getMonth()+1<10 ? "0"+(val.getMonth()+1) : val.getMonth()+1;
     let day=val.getDate()<10 ? "0"+val.getDate() : val.getDate();
     this.dateString = `${year}/${month}/${day}`
-    console.log(new Date());
     this.$emit('date-picker',[this.dateShow,this.dateString]);
-    console.log(this.dateString);
   }
 
 }

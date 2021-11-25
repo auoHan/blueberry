@@ -33,7 +33,6 @@ export default class Tags extends Vue {
   addTags(){
     this.$router.push({ path: '/tags' });
   }
-
 }
 </script>
 

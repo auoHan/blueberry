@@ -52,7 +52,8 @@
 import Vue from 'vue';
 import {Component} from 'vue-property-decorator';
 import DatePicker from '@/components/Money/DatePicker.vue';
-import { eventBus } from '@/main'
+import {eventBus} from '@/main';
+
 @Component({
   components: {DatePicker}
 })
@@ -67,12 +68,10 @@ export default class RemarksCount extends Vue {
   dateSelected = this.dateFormat(this.currentDate);
 
   //在实例初始化之后,侦听Tags组件传来的值
-  beforeCreate():void{
-    console.log(eventBus);
-    eventBus.$on('count-show',(countShow: boolean) => {
-      console.log(countShow);
-      this.countShow= countShow;//箭头函数内部不会产生新的this，这边如果不用=>,this指代eventBus
-    })
+  beforeCreate(): void {
+    eventBus.$on('count-show', (countShow: boolean) => {
+      this.countShow = countShow;//箭头函数内部不会产生新的this，这边如果不用=>,this指代eventBus
+    });
   }
 
   //鼠标点击或者手指按压按钮，改变当前按钮样式，其他按钮不变
@@ -94,7 +93,6 @@ export default class RemarksCount extends Vue {
       } else {
         this.numbers = [1, 2, 3, '今天', 4, 5, 6, '+', 7, 8, 9, '-', 0, '.', ''];
       }
-      console.log(this.dateSelected);
     } else {
       this.dateShow = event;
     }
@@ -121,6 +119,8 @@ export default class RemarksCount extends Vue {
     } else if (number === '.') {
       if (this.sum === '0') {
         this.sum = '0.';
+      } else if (this.sum.length === 16) {
+        return;
       } else {
         if (this.sum.charAt(this.sum.length - 1) !== '+'
           && this.sum.charAt(this.sum.length - 1) !== '-'
@@ -136,6 +136,9 @@ export default class RemarksCount extends Vue {
         this.sum = this.sum.substring(0, this.sum.length - 1);
       }
     } else if (number === '+') {
+      if (this.sum.length === 16) {
+        return;
+      }
       if (this.sum.charAt(this.sum.length - 1) !== '+'
         && this.sum.charAt(this.sum.length - 1) !== '-'
         && this.sum.charAt(this.sum.length - 1) !== '.') {
@@ -145,6 +148,9 @@ export default class RemarksCount extends Vue {
         this.sum = this.sum.replace(/-$/, '+');
       }
     } else if (number === '-') {
+      if (this.sum.length === 16) {
+        return;
+      }
       if (this.sum.charAt(this.sum.length - 1) !== '+'
         && this.sum.charAt(this.sum.length - 1) !== '-'
         && this.sum.charAt(this.sum.length - 1) !== '.') {
@@ -154,11 +160,16 @@ export default class RemarksCount extends Vue {
         this.sum = this.sum.replace(/[+]$/, '-');
       }
     } else {
+      if (this.sum.length === 16) {
+        return;
+      }
       if (this.sum === '0' && number !== '+' && number !== '-') {
         this.sum = '';
       }
       this.sum += number;
     }
+
+
   }
 
 }
