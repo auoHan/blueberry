@@ -6,7 +6,7 @@ import store from './store'
 import Nav from '@/components/Footer.vue';
 import Layout from '@/components/Layout.vue';
 import Icon from '@/components/Icon.vue';
-import 'animate.css'
+import 'animate.css';
 
 export const eventBus = new Vue()
 

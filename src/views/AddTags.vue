@@ -29,7 +29,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import {Component} from 'vue-property-decorator';
-
+import PubSub from 'pubsub-js'
 @Component
 export default class extends Vue {
   //类型分类
@@ -58,6 +58,8 @@ export default class extends Vue {
   }
   //成功跳转到Money组件页面，并传值，目前还没传
   addTag(){
+    //发布消息
+    PubSub.publish('add-tag',this.selectedIcon)
     this.$router.push({ path: '/money' });
   }
 }

@@ -18,6 +18,7 @@
 import Vue from 'vue';
 import {Component} from 'vue-property-decorator';
 import { eventBus } from '@/main';
+import PubSub from "pubsub-js";
 @Component
 export default class Tags extends Vue {
   countShow = false;
@@ -33,6 +34,14 @@ export default class Tags extends Vue {
   addTags(){
     this.$router.push({ path: '/tags' });
   }
+  //挂载页面的时候订阅AddTags组件发布的消息
+  mounted(): void {
+      PubSub.subscribe("add-tag", (_: string, newTag: string) => {
+      this.tagIcons.push(newTag);
+      console.log(newTag);
+    });
+  }
+
 }
 </script>
 
