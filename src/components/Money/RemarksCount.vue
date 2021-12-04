@@ -9,25 +9,25 @@
               <Icon icon-name="备注" class="note-icon"/>
               备注:
             </span>
-        <input type="text" placeholder="点击写备注..." v-model="value"/>
+        <input type="text" placeholder="点击写备注..." v-model="note"/>
       </label>
       <span class="sum">{{ sum }}</span>
     </div>
     <!-- 计算 -->
     <div class="buttons">
 
-      <button v-for="(number,index) in numbers"
+      <button v-for="(key,index) in keyboards"
               :key="index"
               :class="index===activeClass && 'selected'"
               @mousedown="addActiveClass(index)"
               @mouseup="addActiveClass(-1)"
               @touchstart="addActiveClass(index)"
               @touchend="addActiveClass(-1)"
-              @click="buttons(number,index)"
+              @click="buttons(key,index)"
       >
-        <Icon icon-name="日历" class="date-icon" v-if="index===3 && number==='今天'"/>
+        <Icon icon-name="日历" class="date-icon" v-if="index===3 && key==='今天'"/>
         <Icon icon-name="backspace" class="backspace-icon" v-if="index===14"/>
-        {{ number }}
+        {{ key }}
       </button>
       <button v-if="(sum.charAt(sum.length-1)==='0'
       || sum.charAt(sum.length-1)==='1'
@@ -41,9 +41,11 @@
       || sum.charAt(sum.length-1)==='9'
       )
       && (sum.indexOf('+')!==-1
-          || sum.indexOf('-')!==-1)">=
+          || sum.indexOf('-')!==-1)"
+      @click="amount"
+      >=
       </button>
-      <button v-else>完成</button>
+      <button v-else @click="complete">完成</button>
     </div>
   </div>
 </template>
@@ -62,8 +64,8 @@ export default class RemarksCount extends Vue {
   activeClass = -1;
   dateShow = false;
   countShow = false;
-  value = '';
-  numbers = [1, 2, 3, '今天', 4, 5, 6, '+', 7, 8, 9, '-', 0, '.', ''];
+  note = '';
+  keyboards = [1, 2, 3, '今天', 4, 5, 6, '+', 7, 8, 9, '-', 0, '.', ''];
   currentDate = new Date();
   dateSelected = this.dateFormat(this.currentDate);
 
@@ -89,12 +91,13 @@ export default class RemarksCount extends Vue {
       * 在按钮中写类似逻辑有BUG，需要第二次点才生效
       * */
       if (this.dateSelected !== this.dateFormat(this.currentDate)) {
-        this.numbers.splice(3, 1, this.dateSelected);
+        this.keyboards.splice(3, 1, this.dateSelected);
       } else {
-        this.numbers = [1, 2, 3, '今天', 4, 5, 6, '+', 7, 8, 9, '-', 0, '.', ''];
+        this.keyboards = [1, 2, 3, '今天', 4, 5, 6, '+', 7, 8, 9, '-', 0, '.', ''];
       }
     } else {
       this.dateShow = event;
+      console.log(event);
     }
 
   }
@@ -113,10 +116,11 @@ export default class RemarksCount extends Vue {
   }
 
   //除了完成按钮之外的按钮逻辑
-  buttons(number: number | string | null, index: number) {
+  buttons(key: number | string | null, index: number) {
     if (index === 3) {
       this.dateShow = true;
-    } else if (number === '.') {
+      console.log(this.dateShow);
+    } else if (key === '.') {
       if (this.sum === '0') {
         this.sum = '0.';
       } else if (this.sum.length === 16) {
@@ -126,35 +130,35 @@ export default class RemarksCount extends Vue {
           && this.sum.charAt(this.sum.length - 1) !== '-'
           && this.sum.charAt(this.sum.length - 1) !== '.'
           && this.sum.charAt(this.sum.length - 2) !== '.') {
-          this.sum += number;
+          this.sum += key;
         }
       }
-    } else if (number === '') {
+    } else if (key === '') {
       if (this.sum.length === 1) {
         this.sum = '0';
       } else {
         this.sum = this.sum.substring(0, this.sum.length - 1);
       }
-    } else if (number === '+') {
+    } else if (key === '+') {
       if (this.sum.length === 16) {
         return;
       }
       if (this.sum.charAt(this.sum.length - 1) !== '+'
         && this.sum.charAt(this.sum.length - 1) !== '-'
         && this.sum.charAt(this.sum.length - 1) !== '.') {
-        this.sum += number;
+        this.sum += key;
       }
       if (this.sum.charAt(this.sum.length - 1) === '-') {
         this.sum = this.sum.replace(/-$/, '+');
       }
-    } else if (number === '-') {
+    } else if (key === '-') {
       if (this.sum.length === 16) {
         return;
       }
       if (this.sum.charAt(this.sum.length - 1) !== '+'
         && this.sum.charAt(this.sum.length - 1) !== '-'
         && this.sum.charAt(this.sum.length - 1) !== '.') {
-        this.sum += number;
+        this.sum += key;
       }
       if (this.sum.charAt(this.sum.length - 1) === '+') {
         this.sum = this.sum.replace(/[+]$/, '-');
@@ -163,15 +167,23 @@ export default class RemarksCount extends Vue {
       if (this.sum.length === 16) {
         return;
       }
-      if (this.sum === '0' && number !== '+' && number !== '-') {
+      if (this.sum === '0' && key !== '+' && key !== '-') {
         this.sum = '';
       }
-      this.sum += number;
+      this.sum += key;
     }
-
-
   }
 
+  //计算总金额
+  amount(){
+    //字符串"1+1"运算可以用到eval函数，得到的值是number类型的数字
+    const sum = eval(this.sum)
+    this.sum = sum.toString()
+  }
+  //点击完成按钮后传值
+  complete(){
+    console.log('完成');
+  }
 }
 </script>
 

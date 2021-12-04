@@ -49,7 +49,7 @@ export default class extends Vue {
   addActiveClass(index: number,key: string,icon:string) {
     this.activeClassIndex = index;
     this.activeClassKey = key;
-    this.selectedIcon = icon;
+    this.selectedIcon=icon;
     console.log(this.selectedIcon);
   }
   //返回跳转到Money组件页面
