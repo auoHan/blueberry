@@ -151,7 +151,7 @@ export default class RemarksCount extends Vue {
         && this.sum.charAt(this.sum.length - 1) !== '-'
         && this.sum.charAt(this.sum.length - 1) !== '.') {
         let sum = eval(this.sum);
-        this.sum = sum.toFixed(2).toString() + key;
+        this.sum = (Math.round(sum*100)/100).toString() + key;
       }
       if (this.sum.charAt(this.sum.length - 1) === '-') {
         this.sum = this.sum.replace(/-$/, '+');
@@ -164,7 +164,7 @@ export default class RemarksCount extends Vue {
         && this.sum.charAt(this.sum.length - 1) !== '-'
         && this.sum.charAt(this.sum.length - 1) !== '.') {
         let sum = eval(this.sum);
-        this.sum = sum.toFixed(2).toString() + key;
+        this.sum = (Math.round(sum*100)/100).toString() + key;
       }
       if (this.sum.charAt(this.sum.length - 1) === '+') {
         this.sum = this.sum.replace(/[+]$/, '-');
@@ -191,7 +191,8 @@ export default class RemarksCount extends Vue {
     //字符串"1+1"运算可以用到eval函数，得到的值是number类型的数字
     let sum = eval(this.sum);
     //保留两位小数
-    this.sum = sum.toFixed(2).toString();
+    this.sum = (Math.round(sum*100)/100).toString();
+
   }
 
   //点击完成按钮后传值
