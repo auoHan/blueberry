@@ -42,7 +42,7 @@
       )
       && (sum.indexOf('+')!==-1
           || sum.indexOf('-')!==-1)"
-      @click="amount"
+              @click="amount"
       >=
       </button>
       <button v-else @click="complete">完成</button>
@@ -55,12 +55,14 @@ import Vue from 'vue';
 import {Component} from 'vue-property-decorator';
 import DatePicker from '@/components/Money/DatePicker.vue';
 import {eventBus} from '@/main';
+import {Toast} from 'vant';
 
+Vue.use(Toast);
 @Component({
   components: {DatePicker}
 })
 export default class RemarksCount extends Vue {
-  sum = '0';
+  sum = '0.00';
   activeClass = -1;
   dateShow = false;
   countShow = false;
@@ -129,10 +131,12 @@ export default class RemarksCount extends Vue {
         if (this.sum.charAt(this.sum.length - 1) !== '+'
           && this.sum.charAt(this.sum.length - 1) !== '-'
           && this.sum.charAt(this.sum.length - 1) !== '.'
-          && this.sum.charAt(this.sum.length - 2) !== '.') {
+          && this.sum.charAt(this.sum.length - 2) !== '.'
+          && this.sum.charAt(this.sum.length - 3) !== '.') {
           this.sum += key;
         }
       }
+
     } else if (key === '') {
       if (this.sum.length === 1) {
         this.sum = '0';
@@ -146,7 +150,8 @@ export default class RemarksCount extends Vue {
       if (this.sum.charAt(this.sum.length - 1) !== '+'
         && this.sum.charAt(this.sum.length - 1) !== '-'
         && this.sum.charAt(this.sum.length - 1) !== '.') {
-        this.sum += key;
+        let sum = eval(this.sum);
+        this.sum = sum.toFixed(2).toString() + key;
       }
       if (this.sum.charAt(this.sum.length - 1) === '-') {
         this.sum = this.sum.replace(/-$/, '+');
@@ -158,7 +163,8 @@ export default class RemarksCount extends Vue {
       if (this.sum.charAt(this.sum.length - 1) !== '+'
         && this.sum.charAt(this.sum.length - 1) !== '-'
         && this.sum.charAt(this.sum.length - 1) !== '.') {
-        this.sum += key;
+        let sum = eval(this.sum);
+        this.sum = sum.toFixed(2).toString() + key;
       }
       if (this.sum.charAt(this.sum.length - 1) === '+') {
         this.sum = this.sum.replace(/[+]$/, '-');
@@ -167,22 +173,35 @@ export default class RemarksCount extends Vue {
       if (this.sum.length === 16) {
         return;
       }
-      if (this.sum === '0' && key !== '+' && key !== '-') {
+      if ((this.sum === '0' || this.sum === '0.00') && key !== '+' && key !== '-') {
         this.sum = '';
       }
-      this.sum += key;
+      if (this.sum.charAt(this.sum.length - 2) === '.') {
+        this.sum += key;
+      } else if (this.sum.charAt(this.sum.length - 3) === '.' && this.sum.charAt(this.sum.length - 1) !== '+' && this.sum.charAt(this.sum.length - 1) !== '-') {
+        return;
+      } else {
+        this.sum += key;
+      }
     }
   }
 
   //计算总金额
-  amount(){
+  amount() {
     //字符串"1+1"运算可以用到eval函数，得到的值是number类型的数字
-    const sum = eval(this.sum)
-    this.sum = sum.toString()
+    let sum = eval(this.sum);
+    //保留两位小数
+    this.sum = sum.toFixed(2).toString();
   }
+
   //点击完成按钮后传值
-  complete(){
-    this.$emit('value',[this.sum,this.note,this.dateSelected])
+  complete() {
+    if (this.sum !== '0' && this.sum !== '0.0' && this.sum !== '0.' && this.sum !== '0.00') {
+      this.$emit('value', [this.sum, this.note, this.dateSelected]);
+      this.$emit('submit', [this.sum, this.note, this.dateSelected]);
+    } else {
+      Toast('请输入金额！');
+    }
     console.log('完成');
   }
 }
