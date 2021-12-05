@@ -42,7 +42,8 @@
       )
       && (sum.indexOf('+')!==-1
           || sum.indexOf('-')!==-1)
-      &&sum.charAt(0)!=='-'"
+      //首位是减号，是否展示=号，(sum.split('-')).length-1===2判断字符串中的'-'是否大于等于两个
+      &&(sum.charAt(0)!=='-' || (sum.split('-')).length-1>=2)"
               @click="amount"
       >=
       </button>
@@ -122,7 +123,6 @@ export default class RemarksCount extends Vue {
   buttons(key: number | string | null, index: number) {
     if (index === 3) {
       this.dateShow = true;
-      console.log(this.dateShow);
     } else if (key === '.') {
       if (this.sum === '0') {
         this.sum = '0.';
@@ -179,9 +179,16 @@ export default class RemarksCount extends Vue {
       if ((this.sum === '0' || this.sum === '0.00') && key !== '+' && key !== '-') {
         this.sum = '';
       }
+      if (this.sum.charAt(this.sum.length - 1) === '0'
+        && (this.sum.charAt(this.sum.length - 2) === '-' || this.sum.charAt(this.sum.length - 2) === '+')
+      ) {
+        this.sum = this.sum.substring(0, this.sum.length - 1);
+      }
       if (this.sum.charAt(this.sum.length - 2) === '.') {
         this.sum += key;
-      } else if (this.sum.charAt(this.sum.length - 3) === '.' && this.sum.charAt(this.sum.length - 1) !== '+' && this.sum.charAt(this.sum.length - 1) !== '-') {
+      } else if (this.sum.charAt(this.sum.length - 3) === '.'
+        && this.sum.charAt(this.sum.length - 1) !== '+'
+        && this.sum.charAt(this.sum.length - 1) !== '-') {
         return;
       } else {
         this.sum += key;
@@ -200,14 +207,31 @@ export default class RemarksCount extends Vue {
 
   //点击完成按钮后传值
   complete() {
+    const emitComplete = (sum: string) => {
+      this.$emit('value', [sum, this.note, this.dateSelected]);
+      this.$emit('submit', [sum, this.note, this.dateSelected]);
+    };
     if (this.sum !== '0'
       && this.sum !== '0.0'
       && this.sum !== '0.'
       && this.sum !== '0.00'
       && this.sum !== '0+'
       && this.sum !== '0-') {
-      this.$emit('value', [this.sum, this.note, this.dateSelected]);
-      this.$emit('submit', [this.sum, this.note, this.dateSelected]);
+      if (this.sum.charAt(this.sum.length - 1) === '+'
+        || this.sum.charAt(this.sum.length - 1) === '-'
+        || this.sum.charAt(this.sum.length - 1) === '.') {
+        const sum = this.sum.substring(0, this.sum.length - 1);
+        emitComplete(sum);
+      } else if (this.sum.substring(this.sum.length - 2) === '.0') {
+        const sum = this.sum.substring(0, this.sum.length - 2);
+        emitComplete(sum);
+      } else if (this.sum.substring(this.sum.length - 3) === '.00') {
+        const sum = this.sum.substring(0, this.sum.length - 3);
+        emitComplete(sum);
+      } else {
+        this.$emit('value', [this.sum, this.note, this.dateSelected]);
+        this.$emit('submit', [this.sum, this.note, this.dateSelected]);
+      }
     } else {
       Toast('请输入金额！');
     }
