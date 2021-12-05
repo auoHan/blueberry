@@ -182,6 +182,7 @@ export default class RemarksCount extends Vue {
   }
   //点击完成按钮后传值
   complete(){
+    this.$emit('value',[this.sum,this.note,this.dateSelected])
     console.log('完成');
   }
 }

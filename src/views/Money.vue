@@ -1,7 +1,7 @@
 <template>
   <!-- money页面 -->
   <div class="money">
-    <Types @value="onUpdateType"/>
+    <Types :value.sync="record.type"/>
     <Tags @value="onUpdateTag"/>
     <RemarksCount @value="onUpdateRemarksCount"/>
   </div>
@@ -13,19 +13,28 @@ import {Component} from 'vue-property-decorator';
 import Types from '@/components/Money/Types.vue';
 import Tags from '@/components/Money/Tags.vue';
 import RemarksCount from '@/components/Money/RemarksCount.vue';
+
+ type Record = {
+   tag:string,
+   type:string,
+   remarksCount:string[]
+ }
 @Component({
   components: {RemarksCount, Tags, Types}
 })
 export default class Money extends Vue{
-  tagIcons:string[] = []
-  onUpdateTag(value:string){
-    console.log(value);
+  record:Record = {
+    tag:'',
+    type:'-',
+    remarksCount:[]
   }
-  onUpdateType(value:string){
+  onUpdateTag(value:string){
+    this.record.tag = value
     console.log(value);
   }
   onUpdateRemarksCount(value:string[]){
-    console.log(value );
+    this.record.remarksCount = value
+    console.log(value);
   }
 
 
