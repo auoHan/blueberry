@@ -41,7 +41,8 @@
       || sum.charAt(sum.length-1)==='9'
       )
       && (sum.indexOf('+')!==-1
-          || sum.indexOf('-')!==-1)"
+          || sum.indexOf('-')!==-1)
+      &&sum.charAt(0)!=='-'"
               @click="amount"
       >=
       </button>
@@ -62,7 +63,7 @@ Vue.use(Toast);
   components: {DatePicker}
 })
 export default class RemarksCount extends Vue {
-  sum = '0.00';
+  sum = '0';
   activeClass = -1;
   dateShow = false;
   countShow = false;
@@ -140,6 +141,8 @@ export default class RemarksCount extends Vue {
     } else if (key === '') {
       if (this.sum.length === 1) {
         this.sum = '0';
+      } else if (this.sum.length === 2 && this.sum.charAt(0) === '-') {
+        this.sum = '0';
       } else {
         this.sum = this.sum.substring(0, this.sum.length - 1);
       }
@@ -151,7 +154,7 @@ export default class RemarksCount extends Vue {
         && this.sum.charAt(this.sum.length - 1) !== '-'
         && this.sum.charAt(this.sum.length - 1) !== '.') {
         let sum = eval(this.sum);
-        this.sum = (Math.round(sum*100)/100).toString() + key;
+        this.sum = (Math.round(sum * 100) / 100).toString() + key;
       }
       if (this.sum.charAt(this.sum.length - 1) === '-') {
         this.sum = this.sum.replace(/-$/, '+');
@@ -164,7 +167,7 @@ export default class RemarksCount extends Vue {
         && this.sum.charAt(this.sum.length - 1) !== '-'
         && this.sum.charAt(this.sum.length - 1) !== '.') {
         let sum = eval(this.sum);
-        this.sum = (Math.round(sum*100)/100).toString() + key;
+        this.sum = (Math.round(sum * 100) / 100).toString() + key;
       }
       if (this.sum.charAt(this.sum.length - 1) === '+') {
         this.sum = this.sum.replace(/[+]$/, '-');
@@ -191,13 +194,18 @@ export default class RemarksCount extends Vue {
     //字符串"1+1"运算可以用到eval函数，得到的值是number类型的数字
     let sum = eval(this.sum);
     //保留两位小数
-    this.sum = (Math.round(sum*100)/100).toString();
+    this.sum = (Math.round(sum * 100) / 100).toString();
 
   }
 
   //点击完成按钮后传值
   complete() {
-    if (this.sum !== '0' && this.sum !== '0.0' && this.sum !== '0.' && this.sum !== '0.00') {
+    if (this.sum !== '0'
+      && this.sum !== '0.0'
+      && this.sum !== '0.'
+      && this.sum !== '0.00'
+      && this.sum !== '0+'
+      && this.sum !== '0-') {
       this.$emit('value', [this.sum, this.note, this.dateSelected]);
       this.$emit('submit', [this.sum, this.note, this.dateSelected]);
     } else {
