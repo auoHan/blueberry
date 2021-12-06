@@ -54,7 +54,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import {Component} from 'vue-property-decorator';
+import {Component,Prop} from 'vue-property-decorator';
 import DatePicker from '@/components/Money/DatePicker.vue';
 import {eventBus} from '@/main';
 import {Toast} from 'vant';
@@ -64,6 +64,7 @@ Vue.use(Toast);
   components: {DatePicker}
 })
 export default class RemarksCount extends Vue {
+  @Prop(String) readonly type!:string
   sum = '0';
   activeClass = -1;
   dateShow = false;
@@ -216,6 +217,9 @@ export default class RemarksCount extends Vue {
       this.$emit('value', [sum, this.note, this.dateSelected]);
       this.$emit('submit', [sum, this.note, this.dateSelected]);
     };
+    if (this.type==='+' && this.sum.charAt(0)==='-'){
+      this.sum = this.sum.substring(1,this.sum.length)
+    }
     if (this.sum !== '0'
       && this.sum !== '0.0'
       && this.sum !== '0.'

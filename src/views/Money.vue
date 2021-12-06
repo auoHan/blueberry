@@ -4,7 +4,7 @@
     <Types :value.sync="record.type"/>
     <ExpenseTags @value="onUpdateTag" v-if="record.type==='-'"/>
     <IncomeTags @value="onUpdateTag" v-else-if="record.type==='+'"/>
-    <RemarksCount @value="onUpdateRemarksCount" @submit="saveRecord"/>
+    <RemarksCount @value="onUpdateRemarksCount" @submit="saveRecord" :type="record.type"/>
   </div>
 </template>
 
