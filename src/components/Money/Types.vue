@@ -20,6 +20,7 @@ export default class Types extends Vue {
     if (type !== '-' && type !== '+') {
       throw new Error('type is unknown');
     }
+    //父组件中用到了.sync的话，子组件中的发射事件名称必须为update:开头，加上事件名
     this.$emit('update:value',type)
   }
 }

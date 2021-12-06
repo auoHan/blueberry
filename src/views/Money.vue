@@ -13,22 +13,19 @@ import {Component, Watch} from 'vue-property-decorator';
 import Types from '@/components/Money/Types.vue';
 import Tags from '@/components/Money/Tags.vue';
 import RemarksCount from '@/components/Money/RemarksCount.vue';
+import {model} from '@/model';
 
-type Record = {
-  tag: string,
-  type: string,
-  remarksCount: string[]
-}
 @Component({
   components: {RemarksCount, Tags, Types}
 })
 export default class Money extends Vue {
-  record: Record = {
+  record: RecordItem = {
     tag: '',
     type: '-',
     remarksCount: []
   };
-  records: Record[] = JSON.parse(localStorage.getItem('records') || '[]');
+  //从model的fetch中读取localStorage
+  records = model.fetch();
 
   onUpdateTag(value: string) {
     this.record.tag = value;
@@ -42,7 +39,7 @@ export default class Money extends Vue {
 
   saveRecord() {
     //深拷贝，重新创建一个新的对象
-    const deepClone = JSON.parse(JSON.stringify(this.record));
+    const deepClone = model.clone(this.record);
     this.records.push(deepClone);
     console.log(this.records);
   }
@@ -50,7 +47,8 @@ export default class Money extends Vue {
   //records改变时保存数据
   @Watch('records')
   onRecordsChange() {
-    localStorage.setItem('records', JSON.stringify(this.records));
+    //写入model的save中的localStorage
+    model.save(this.records)
   }
 }
 </script>
