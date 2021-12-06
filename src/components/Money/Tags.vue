@@ -19,7 +19,9 @@ import Vue from 'vue';
 import {Component, Watch} from 'vue-property-decorator';
 import {eventBus} from '@/main';
 import PubSub from 'pubsub-js';
+import { Toast } from 'vant';
 
+Vue.use(Toast);
 @Component
 export default class Tags extends Vue {
   countShow = false;
@@ -45,6 +47,10 @@ export default class Tags extends Vue {
   created(): void {
     //订阅消息
     PubSub.subscribe('add-tag', (_: string, newTag: string) => {
+      if (this.tagIcons.includes(newTag)){
+        Toast.fail('请勿重复添加');
+        return;
+      }
       this.tagIcons.push(newTag);
     });
   }

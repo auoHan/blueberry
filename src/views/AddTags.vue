@@ -16,8 +16,9 @@
           {{ key }}
           <ul class="type-ul">
             <li v-for="(icon,index) in icons" :key="index" @click="addActiveClass(index,key,icon)">
-                <Icon :icon-name=icon class="icon-type" :class="key===activeClassKey && index===activeClassIndex && 'selected'"/>
-                <span :class="key===activeClassKey && index===activeClassIndex && 'selected'">{{ icon }}</span>
+              <Icon :icon-name=icon class="icon-type"
+                    :class="key===activeClassKey && index===activeClassIndex && 'selected'"/>
+              <span :class="key===activeClassKey && index===activeClassIndex && 'selected'">{{ icon }}</span>
             </li>
           </ul>
         </li>
@@ -29,16 +30,17 @@
 <script lang="ts">
 import Vue from 'vue';
 import {Component} from 'vue-property-decorator';
-import PubSub from 'pubsub-js'
+import PubSub from 'pubsub-js';
+
 @Component
 export default class extends Vue {
   //类型分类
   types = {
-    学习: ['乐器', '书籍', '学费', '台灯', '学习工具', '画画','计算器'],
+    学习: ['乐器', '书籍', '学费', '台灯', '学习工具', '画画', '计算器'],
     办公: ['办公桌', '打印机', '电脑', '路由器', '键盘', '鼠标'],
-    医疗: ['打针', '门诊', '检查', '看牙','怀孕'],
+    医疗: ['打针', '门诊', '检查', '看牙', '怀孕'],
     家庭: ['玩具', '奶瓶', '婴儿车', '奶嘴'],
-    家居: ['沙发', '热水器', '洗衣机', '电视机', '空调', '电灯','工具','微波炉'],
+    家居: ['沙发', '热水器', '洗衣机', '电视机', '空调', '电灯', '工具', '微波炉'],
     健身: ['哑铃', '跑步机', '跳绳', '瑜伽', '拳击'],
   };
   activeClassIndex = -1;
@@ -46,21 +48,23 @@ export default class extends Vue {
   selectedIcon = '';
 
   //点击Icon添加样式，把当前Icon传给selectedIcon
-  addActiveClass(index: number,key: string,icon:string) {
+  addActiveClass(index: number, key: string, icon: string) {
     this.activeClassIndex = index;
     this.activeClassKey = key;
-    this.selectedIcon=icon;
+    this.selectedIcon = icon;
     console.log(this.selectedIcon);
   }
+
   //返回跳转到Money组件页面
-  back(){
-    this.$router.push({ path: '/money' });
+  back() {
+    this.$router.push({path: '/money'});
   }
+
   //成功跳转到Money组件页面，并传值，目前还没传
-  addTag(){
+  addTag() {
     //发布消息
-    PubSub.publish('add-tag',this.selectedIcon)
-    this.$router.push({ path: '/money' });
+    PubSub.publish('add-tag', this.selectedIcon);
+    this.$router.push({path: '/money'});
   }
 }
 </script>
@@ -122,8 +126,10 @@ export default class extends Vue {
             min-width: 20%;
             max-width: 20%;
             padding: 10px 0;
+
             > span {
               font-size: 14px;
+
               &.selected {
                 color: $color-highLight;
               }
