@@ -170,7 +170,7 @@ export default class RemarksCount extends Vue {
       }
       if (this.sum.charAt(this.sum.length - 1) === '+') {
         // this.sum = this.sum.replace(/[+]$/, '-');
-       this.sum = this.sum.substring(0,this.sum.length-1)+key
+        this.sum = this.sum.substring(0, this.sum.length - 1) + key;
       }
     } else {
       if (this.sum.length === 16) {
@@ -235,7 +235,7 @@ export default class RemarksCount extends Vue {
     } else {
       Toast('请输入金额！');
     }
-    this.sum='0'
+    this.sum = '0';
     console.log('完成');
   }
 }

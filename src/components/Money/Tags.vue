@@ -3,11 +3,11 @@
   <div class="tags">
     <ul class="current">
       <li v-for="(tagName,index) in tagIcons" :key="tagName" @click="addActiveClass(index,tagName)">
-        <Icon :icon-name="tagName" class="tags-icon" :class="index===activeClass && 'selected'" />
-        <span :class="index===activeClass && 'selected'">{{tagName}}</span>
+        <Icon :icon-name="tagName" class="tags-icon" :class="index===activeClass && 'selected'"/>
+        <span :class="index===activeClass && 'selected'">{{ tagName }}</span>
       </li>
       <li @click="addTags">
-        <Icon icon-name="添加" class="tags-icon" />
+        <Icon icon-name="添加" class="tags-icon"/>
         <span>添加</span>
       </li>
     </ul>
@@ -16,32 +16,43 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import {Component} from 'vue-property-decorator';
-import { eventBus } from '@/main';
-import PubSub from "pubsub-js";
+import {Component, Watch} from 'vue-property-decorator';
+import {eventBus} from '@/main';
+import PubSub from 'pubsub-js';
+
 @Component
 export default class Tags extends Vue {
   countShow = false;
   activeClass = -1;
-  tagIcons = ['餐饮','交通','日用','水果','蔬菜','购物'];
+
+  //'["餐饮", "交通", "日用", "水果", "蔬菜", "购物"]'此处数组里面的元素必须双引号，因为localStorage存储的数组的元素是双引号的
+  //tagIcons: string[] = ["餐饮", "交通", "日用", "水果", "蔬菜", "购物"];
+  tagIcons: string[] = JSON.parse(localStorage.getItem('addTag') || '["餐饮", "交通", "日用", "水果", "蔬菜", "购物"]');
+
   //点击li后添加样式，并传参给RemarksCount组件，控制RemarksCount组件是否显示
-  addActiveClass(index: number,tagName:string) {
+  addActiveClass(index: number, tagName: string) {
     this.activeClass = index;
     this.countShow = true;
     eventBus.$emit('count-show', this.countShow);
-    this.$emit('value',tagName)
-  }
-  //添加标签跳转路由
-  addTags(){
-    this.$router.push({ path: '/tags' });
+    this.$emit('value', tagName);
   }
 
-  mounted(): void {
-    PubSub.subscribe("add-tag", (_: string, newTag: string) => {
+  //添加标签跳转路由
+  addTags() {
+    this.$router.push({path: '/tags'});
+  }
+
+  created(): void {
+    //订阅消息
+    PubSub.subscribe('add-tag', (_: string, newTag: string) => {
       this.tagIcons.push(newTag);
-      console.log(newTag);
-      console.log(this.tagIcons);
     });
+  }
+
+  //tagIcons改变时保存数据
+  @Watch('tagIcons')
+  onTagIconsChange() {
+    localStorage.setItem('addTag', JSON.stringify(this.tagIcons));
   }
 }
 </script>

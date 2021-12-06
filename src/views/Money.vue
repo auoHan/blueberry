@@ -9,46 +9,48 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import {Component,Watch} from 'vue-property-decorator';
+import {Component, Watch} from 'vue-property-decorator';
 import Types from '@/components/Money/Types.vue';
 import Tags from '@/components/Money/Tags.vue';
 import RemarksCount from '@/components/Money/RemarksCount.vue';
 
- type Record = {
-   tag:string,
-   type:string,
-   remarksCount:string[]
- }
+type Record = {
+  tag: string,
+  type: string,
+  remarksCount: string[]
+}
 @Component({
   components: {RemarksCount, Tags, Types}
 })
-export default class Money extends Vue{
-  record:Record = {
-    tag:'',
-    type:'-',
-    remarksCount:[]
-  }
-  records:Record[] = []
-  onUpdateTag(value:string){
-    this.record.tag = value
-    console.log(value);
-  }
-  onUpdateRemarksCount(value:string[]){
-    this.record.remarksCount = value
+export default class Money extends Vue {
+  record: Record = {
+    tag: '',
+    type: '-',
+    remarksCount: []
+  };
+  records: Record[] = JSON.parse(localStorage.getItem('records') || '[]');
+
+  onUpdateTag(value: string) {
+    this.record.tag = value;
     console.log(value);
   }
 
-  saveRecord(){
+  onUpdateRemarksCount(value: string[]) {
+    this.record.remarksCount = value;
+    console.log(value);
+  }
+
+  saveRecord() {
     //深拷贝，重新创建一个新的对象
-    const deepClone = JSON.parse(JSON.stringify(this.record))
+    const deepClone = JSON.parse(JSON.stringify(this.record));
     this.records.push(deepClone);
     console.log(this.records);
   }
 
+  //records改变时保存数据
   @Watch('records')
-  onRecordsChange(){
-    localStorage.setItem('records',JSON.stringify(this.records));
-
+  onRecordsChange() {
+    localStorage.setItem('records', JSON.stringify(this.records));
   }
 }
 </script>
