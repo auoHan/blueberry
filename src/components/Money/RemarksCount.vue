@@ -101,7 +101,6 @@ export default class RemarksCount extends Vue {
       }
     } else {
       this.dateShow = event;
-      console.log(event);
     }
 
   }
@@ -157,7 +156,7 @@ export default class RemarksCount extends Vue {
         this.sum = (Math.round(sum * 100) / 100).toString() + key;
       }
       if (this.sum.charAt(this.sum.length - 1) === '-') {
-        this.sum = this.sum.replace(/-$/, '+');
+        this.sum = this.sum.replace(/[-]$/, '+');
       }
     } else if (key === '-') {
       if (this.sum.length === 16) {
@@ -170,7 +169,8 @@ export default class RemarksCount extends Vue {
         this.sum = (Math.round(sum * 100) / 100).toString() + key;
       }
       if (this.sum.charAt(this.sum.length - 1) === '+') {
-        this.sum = this.sum.replace(/[+]$/, '-');
+        // this.sum = this.sum.replace(/[+]$/, '-');
+       this.sum = this.sum.substring(0,this.sum.length-1)+key
       }
     } else {
       if (this.sum.length === 16) {
@@ -179,16 +179,16 @@ export default class RemarksCount extends Vue {
       if ((this.sum === '0' || this.sum === '0.00') && key !== '+' && key !== '-') {
         this.sum = '';
       }
+      //如果最后一位是0，倒数第二位是+或者-，再点击其他的数字则删除最后一位，改为点击的数字
       if (this.sum.charAt(this.sum.length - 1) === '0'
         && (this.sum.charAt(this.sum.length - 2) === '-' || this.sum.charAt(this.sum.length - 2) === '+')
       ) {
         this.sum = this.sum.substring(0, this.sum.length - 1);
       }
+      //小数点后面如果是一位则还可以点击数字，如果是两位，则return，如果都不是则点击任何数字有效，保证小数点后面不超过两位
       if (this.sum.charAt(this.sum.length - 2) === '.') {
         this.sum += key;
-      } else if (this.sum.charAt(this.sum.length - 3) === '.'
-        && this.sum.charAt(this.sum.length - 1) !== '+'
-        && this.sum.charAt(this.sum.length - 1) !== '-') {
+      } else if (this.sum.charAt(this.sum.length - 3) === '.') {
         return;
       } else {
         this.sum += key;
@@ -200,7 +200,7 @@ export default class RemarksCount extends Vue {
   amount() {
     //字符串"1+1"运算可以用到eval函数，得到的值是number类型的数字
     let sum = eval(this.sum);
-    //保留两位小数
+    //如果有小数，保留两位小数或者一位小数
     this.sum = (Math.round(sum * 100) / 100).toString();
 
   }
@@ -235,6 +235,7 @@ export default class RemarksCount extends Vue {
     } else {
       Toast('请输入金额！');
     }
+    this.sum='0'
     console.log('完成');
   }
 }
