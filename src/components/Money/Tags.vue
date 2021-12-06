@@ -1,12 +1,24 @@
 <template>
   <!-- 标签显示 -->
   <div class="tags">
-    <ul class="current">
-      <li v-for="(tagName,index) in tagIcons" :key="tagName" @click="addActiveClass(index,tagName)">
+    <!--  支出展示  -->
+    <ul class="current" v-if="type==='-'">
+      <li v-for="(tagName,index) in expense" :key="tagName" @click="addActiveClass(index,tagName)">
         <Icon :icon-name="tagName" class="tags-icon" :class="index===activeClass && 'selected'"/>
         <span :class="index===activeClass && 'selected'">{{ tagName }}</span>
       </li>
-      <li @click="addTags">
+      <li @click="addExpenseTags">
+        <Icon icon-name="添加" class="tags-icon"/>
+        <span>添加</span>
+      </li>
+    </ul>
+    <!--  收入展示  -->
+    <ul class="current" v-else-if="type==='+'">
+      <li v-for="(tagName,index) in income" :key="tagName" @click="addActiveClass(index,tagName)">
+        <Icon :icon-name="tagName" class="tags-icon" :class="index===activeClass && 'selected'"/>
+        <span :class="index===activeClass && 'selected'">{{ tagName }}</span>
+      </li>
+      <li @click="addIncomeTags">
         <Icon icon-name="添加" class="tags-icon"/>
         <span>添加</span>
       </li>
@@ -16,7 +28,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import {Component, Watch} from 'vue-property-decorator';
+import {Component, Watch,Prop} from 'vue-property-decorator';
 import {eventBus} from '@/main';
 import PubSub from 'pubsub-js';
 import { Toast } from 'vant';
@@ -24,13 +36,15 @@ import { Toast } from 'vant';
 Vue.use(Toast);
 @Component
 export default class Tags extends Vue {
+  @Prop(String) readonly type!:string
   countShow = false;
   activeClass = -1;
 
   //'["餐饮", "交通", "日用", "水果", "蔬菜", "购物"]'此处数组里面的元素必须双引号，因为localStorage存储的数组的元素是双引号的
   //tagIcons: string[] = ["餐饮", "交通", "日用", "水果", "蔬菜", "购物"];
-  tagIcons: string[] = JSON.parse(localStorage.getItem('addTag') || '["餐饮", "交通", "日用", "水果", "蔬菜", "购物"]');
+  expense: string[] = JSON.parse(localStorage.getItem('expenseTag') || '["餐饮", "交通", "日用", "水果", "蔬菜", "购物"]');
 
+  income:string[] = JSON.parse(localStorage.getItem('incomeTag') || '["画画"]');
   //点击li后添加样式，并传参给RemarksCount组件，控制RemarksCount组件是否显示
   addActiveClass(index: number, tagName: string) {
     this.activeClass = index;
@@ -39,26 +53,39 @@ export default class Tags extends Vue {
     this.$emit('value', tagName);
   }
 
-  //添加标签跳转路由
-  addTags() {
-    this.$router.push({path: '/tags'});
+  //添加支出标签跳转路由
+  addExpenseTags() {
+    this.$router.push({path: '/expense'});
   }
-
+  addIncomeTags(){
+    this.$router.push({path:'/income'})
+  }
   created(): void {
     //订阅消息
-    PubSub.subscribe('add-tag', (_: string, newTag: string) => {
-      if (this.tagIcons.includes(newTag)){
+    PubSub.subscribe('expense-tag', (_: string, newTag: string) => {
+      if (this.expense.includes(newTag)){
         Toast.fail('请勿重复添加');
         return;
       }
-      this.tagIcons.push(newTag);
+      this.expense.push(newTag);
+    });
+    PubSub.subscribe('income-tag', (_: string, newTag: string) => {
+      if (this.income.includes(newTag)){
+        Toast.fail('请勿重复添加');
+        return;
+      }
+      this.income.push(newTag);
     });
   }
 
-  //tagIcons改变时保存数据
-  @Watch('tagIcons')
-  onTagIconsChange() {
-    localStorage.setItem('addTag', JSON.stringify(this.tagIcons));
+  //expense改变时保存数据
+  @Watch('expense')
+  onExpenseChange() {
+    localStorage.setItem('expenseTag', JSON.stringify(this.expense));
+  }
+  @Watch('income')
+  onIncomeChange() {
+    localStorage.setItem('incomeTag', JSON.stringify(this.income));
   }
 }
 </script>

@@ -2,7 +2,7 @@
   <!-- money页面 -->
   <div class="money">
     <Types :value.sync="record.type"/>
-    <Tags @value="onUpdateTag"/>
+    <Tags  :type="record.type" @value="onUpdateTag"/>
     <RemarksCount @value="onUpdateRemarksCount" @submit="saveRecord"/>
   </div>
 </template>

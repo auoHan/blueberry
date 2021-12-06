@@ -6,7 +6,7 @@
         <Icon icon-name="返回" class="back-icon"/>
         返回
       </li>
-      <li>添加支出类别</li>
+      <li>添加收入类别</li>
       <li @click="addTag">完成</li>
     </ul>
     <!--  图标展示区域  -->
@@ -36,12 +36,12 @@ import PubSub from 'pubsub-js';
 export default class extends Vue {
   //类型分类
   types = {
-    学习: ['乐器', '书籍', '学费', '台灯', '学习工具', '画画', '计算器'],
-    办公: ['办公桌', '打印机', '电脑', '路由器', '键盘', '鼠标'],
-    医疗: ['打针', '门诊', '检查', '看牙', '怀孕'],
+    学习: ['乐器', '书籍', '学费'],
+    办公: ['路由器', '键盘', '鼠标'],
+    医疗: ['检查', '看牙', '怀孕'],
     家庭: ['玩具', '奶瓶', '婴儿车', '奶嘴'],
-    家居: ['沙发', '热水器', '洗衣机', '电视机', '空调', '电灯', '工具', '微波炉'],
-    健身: ['哑铃', '跑步机', '跳绳', '瑜伽', '拳击'],
+    家居: ['空调', '电灯', '工具', '微波炉'],
+    健身: ['哑铃', '跑步机', '瑜伽', '拳击'],
   };
   activeClassIndex = -1;
   activeClassKey = '';
@@ -63,8 +63,12 @@ export default class extends Vue {
   //成功跳转到Money组件页面，并传值，目前还没传
   addTag() {
     //发布消息
-    PubSub.publish('add-tag', this.selectedIcon);
+    PubSub.publish('income-tag', this.selectedIcon);
     this.$router.push({path: '/money'});
+  }
+  beforeRouteLeave(to,from,next){
+    to.meta.keepAlive = true
+    next(0)
   }
 }
 </script>
