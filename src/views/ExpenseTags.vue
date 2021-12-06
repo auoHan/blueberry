@@ -66,10 +66,6 @@ export default class extends Vue {
     PubSub.publish('expense-tag', this.selectedIcon);
     this.$router.push({path: '/money'});
   }
-  beforeRouteLeave(to,from,next){
-    to.meta.keepAlive = true
-    next(0)
-  }
 }
 </script>
 

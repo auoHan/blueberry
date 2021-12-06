@@ -2,23 +2,12 @@
   <!-- 标签显示 -->
   <div class="tags">
     <!--  支出展示  -->
-    <ul class="current" v-if="type==='-'">
-      <li v-for="(tagName,index) in expense" :key="tagName" @click="addActiveClass(index,tagName)">
-        <Icon :icon-name="tagName" class="tags-icon" :class="index===activeClass && 'selected'"/>
-        <span :class="index===activeClass && 'selected'">{{ tagName }}</span>
+    <ul class="current">
+      <li v-for="(tagName,index) in expense" :key="tagName" @click="addExpenseClass(index,tagName)">
+        <Icon :icon-name="tagName" class="tags-icon" :class="index===expenseClass && 'selected'"/>
+        <span :class="index===expenseClass && 'selected'">{{ tagName }}</span>
       </li>
       <li @click="addExpenseTags">
-        <Icon icon-name="添加" class="tags-icon"/>
-        <span>添加</span>
-      </li>
-    </ul>
-    <!--  收入展示  -->
-    <ul class="current" v-else-if="type==='+'">
-      <li v-for="(tagName,index) in income" :key="tagName" @click="addActiveClass(index,tagName)">
-        <Icon :icon-name="tagName" class="tags-icon" :class="index===activeClass && 'selected'"/>
-        <span :class="index===activeClass && 'selected'">{{ tagName }}</span>
-      </li>
-      <li @click="addIncomeTags">
         <Icon icon-name="添加" class="tags-icon"/>
         <span>添加</span>
       </li>
@@ -37,28 +26,25 @@ Vue.use(Toast);
 @Component
 export default class Tags extends Vue {
   @Prop(String) readonly type!:string
-  countShow = false;
-  activeClass = -1;
-
+  expenseShow = false;
+  expenseClass = -1;
   //'["餐饮", "交通", "日用", "水果", "蔬菜", "购物"]'此处数组里面的元素必须双引号，因为localStorage存储的数组的元素是双引号的
   //tagIcons: string[] = ["餐饮", "交通", "日用", "水果", "蔬菜", "购物"];
   expense: string[] = JSON.parse(localStorage.getItem('expenseTag') || '["餐饮", "交通", "日用", "水果", "蔬菜", "购物"]');
-
-  income:string[] = JSON.parse(localStorage.getItem('incomeTag') || '["画画"]');
   //点击li后添加样式，并传参给RemarksCount组件，控制RemarksCount组件是否显示
-  addActiveClass(index: number, tagName: string) {
-    this.activeClass = index;
-    this.countShow = true;
-    eventBus.$emit('count-show', this.countShow);
+  mounted():void{
+    eventBus.$emit('expense-show', this.expenseShow);
+  }
+  addExpenseClass(index: number, tagName: string) {
+    this.expenseClass = index;
+    this.expenseShow = true;
+    eventBus.$emit('expense-show', this.expenseShow);
     this.$emit('value', tagName);
   }
 
   //添加支出标签跳转路由
   addExpenseTags() {
     this.$router.push({path: '/expense'});
-  }
-  addIncomeTags(){
-    this.$router.push({path:'/income'})
   }
   created(): void {
     //订阅消息
@@ -69,23 +55,12 @@ export default class Tags extends Vue {
       }
       this.expense.push(newTag);
     });
-    PubSub.subscribe('income-tag', (_: string, newTag: string) => {
-      if (this.income.includes(newTag)){
-        Toast.fail('请勿重复添加');
-        return;
-      }
-      this.income.push(newTag);
-    });
   }
 
   //expense改变时保存数据
   @Watch('expense')
   onExpenseChange() {
     localStorage.setItem('expenseTag', JSON.stringify(this.expense));
-  }
-  @Watch('income')
-  onIncomeChange() {
-    localStorage.setItem('incomeTag', JSON.stringify(this.income));
   }
 }
 </script>

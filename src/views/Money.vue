@@ -2,7 +2,8 @@
   <!-- money页面 -->
   <div class="money">
     <Types :value.sync="record.type"/>
-    <Tags  :type="record.type" @value="onUpdateTag"/>
+    <ExpenseTags @value="onUpdateTag" v-if="record.type==='-'"/>
+    <IncomeTags @value="onUpdateTag" v-else-if="record.type==='+'"/>
     <RemarksCount @value="onUpdateRemarksCount" @submit="saveRecord"/>
   </div>
 </template>
@@ -11,12 +12,14 @@
 import Vue from 'vue';
 import {Component, Watch} from 'vue-property-decorator';
 import Types from '@/components/Money/Types.vue';
-import Tags from '@/components/Money/Tags.vue';
+import ExpenseTags from '@/components/Money/ExpenseTags.vue';
+import IncomeTags from '@/components/Money/IncomeTags.vue';
 import RemarksCount from '@/components/Money/RemarksCount.vue';
 import {model} from '@/model';
 
+
 @Component({
-  components: {RemarksCount, Tags, Types}
+  components: {IncomeTags, ExpenseTags, RemarksCount, Types}
 })
 export default class Money extends Vue {
   record: RecordItem = {

@@ -74,9 +74,14 @@ export default class RemarksCount extends Vue {
   dateSelected = this.dateFormat(this.currentDate);
 
   //在实例初始化之后,侦听Tags组件传来的值
-  beforeCreate(): void {
-    eventBus.$on('count-show', (countShow: boolean) => {
-      this.countShow = countShow;//箭头函数内部不会产生新的this，这边如果不用=>,this指代eventBus
+  mounted(): void {
+    eventBus.$on('expense-show', (expense: boolean) => {
+      this.countShow = expense;//箭头函数内部不会产生新的this，这边如果不用=>,this指代eventBus
+      this.sum = '0';
+    });
+    eventBus.$on('income-show', (income: boolean) => {
+      this.countShow = income;//箭头函数内部不会产生新的this，这边如果不用=>,this指代eventBus
+      this.sum = '0';
     });
   }
 

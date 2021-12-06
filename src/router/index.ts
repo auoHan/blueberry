@@ -5,7 +5,6 @@ import Detail from '@/views/Detail.vue';
 import Statistics from '@/views/Statistics.vue';
 import NotFound from '@/views/NotFound.vue';
 import ExpenseTags from '@/views/ExpenseTags.vue';
-import IncomeTags from '@/views/IncomeTags.vue';
 
 Vue.use(VueRouter);
 
@@ -21,9 +20,6 @@ const routes: Array<RouteConfig> = [
   {
     path:'/money',
     component:Money,
-    meta:{
-      keepAlive:true
-    }
   },
   {
     path:'/statistics',
@@ -33,10 +29,6 @@ const routes: Array<RouteConfig> = [
   {
     path: '/expense',
     component: ExpenseTags,
-  },
-  {
-    path:'/income',
-    component:IncomeTags,
   },
   {
     path:'*',
