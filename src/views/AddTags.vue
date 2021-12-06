@@ -10,7 +10,7 @@
       <li @click="addTag">完成</li>
     </ul>
     <!--  图标展示区域  -->
-    <div class="tag-pick">
+    <main class="tag-pick">
       <ul class="type">
         <li v-for="(icons,key,index) in types" :key="index">
           {{ key }}
@@ -23,7 +23,7 @@
           </ul>
         </li>
       </ul>
-    </div>
+    </main>
   </div>
 </template>
 
