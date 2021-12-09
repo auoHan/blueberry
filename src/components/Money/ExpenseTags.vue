@@ -17,24 +17,26 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import {Component, Watch,Prop} from 'vue-property-decorator';
+import {Component, Watch, Prop} from 'vue-property-decorator';
 import {eventBus} from '@/main';
 import PubSub from 'pubsub-js';
-import { Toast } from 'vant';
+import {Toast} from 'vant';
 
 Vue.use(Toast);
 @Component
 export default class Tags extends Vue {
-  @Prop(String) readonly type!:string
+  @Prop(String) readonly type!: string;
   expenseShow = false;
   expenseClass = -1;
   //'["餐饮", "交通", "日用", "水果", "蔬菜", "购物"]'此处数组里面的元素必须双引号，因为localStorage存储的数组的元素是双引号的
   //tagIcons: string[] = ["餐饮", "交通", "日用", "水果", "蔬菜", "购物"];
   expense: string[] = JSON.parse(localStorage.getItem('expenseTag') || '["餐饮", "交通", "日用", "水果", "蔬菜", "购物"]');
+
   //点击li后添加样式，并传参给RemarksCount组件，控制RemarksCount组件是否显示
-  mounted():void{
+  mounted(): void {
     eventBus.$emit('expense-show', this.expenseShow);
   }
+
   addExpenseClass(index: number, tagName: string) {
     this.expenseClass = index;
     this.expenseShow = true;
@@ -46,10 +48,11 @@ export default class Tags extends Vue {
   addExpenseTags() {
     this.$router.push({path: '/expense'});
   }
+
   created(): void {
     //订阅消息
     PubSub.subscribe('expense-tag', (_: string, newTag: string) => {
-      if (this.expense.includes(newTag)){
+      if (this.expense.includes(newTag)) {
         Toast.fail('请勿重复添加');
         return;
       }
@@ -62,6 +65,12 @@ export default class Tags extends Vue {
   onExpenseChange() {
     localStorage.setItem('expenseTag', JSON.stringify(this.expense));
   }
+
+  @Watch('type')
+  onTypeChange() {
+    this.expenseShow = false;
+    this.expenseClass = -1;
+  }
 }
 </script>
 
@@ -70,8 +79,6 @@ export default class Tags extends Vue {
 
 .tags {
   padding: 16px 16px;
-  flex: 1;
-  overflow: auto;
 
   > .current {
     display: flex;

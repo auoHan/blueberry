@@ -54,7 +54,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import {Component,Prop} from 'vue-property-decorator';
+import {Component, Prop, Watch} from 'vue-property-decorator';
 import DatePicker from '@/components/Money/DatePicker.vue';
 import {eventBus} from '@/main';
 import {Toast} from 'vant';
@@ -64,7 +64,7 @@ Vue.use(Toast);
   components: {DatePicker}
 })
 export default class RemarksCount extends Vue {
-  @Prop(String) readonly type!:string
+  @Prop(String) readonly type!: string;
   sum = '0';
   activeClass = -1;
   dateShow = false;
@@ -73,6 +73,11 @@ export default class RemarksCount extends Vue {
   keyboards = [1, 2, 3, '今天', 4, 5, 6, '+', 7, 8, 9, '-', 0, '.', ''];
   currentDate = new Date();
   dateSelected = this.dateFormat(this.currentDate);
+
+  @Watch('type')
+  onTypeChange() {
+    this.countShow = false;
+  }
 
   //在实例初始化之后,侦听Tags组件传来的值
   mounted(): void {
@@ -217,8 +222,8 @@ export default class RemarksCount extends Vue {
       this.$emit('value', [sum, this.note, this.dateSelected]);
       this.$emit('submit', [sum, this.note, this.dateSelected]);
     };
-    if (this.type==='+' && this.sum.charAt(0)==='-'){
-      this.sum = this.sum.substring(1,this.sum.length)
+    if (this.type === '+' && this.sum.charAt(0) === '-') {
+      this.sum = this.sum.substring(1, this.sum.length);
     }
     if (this.sum !== '0'
       && this.sum !== '0.0'

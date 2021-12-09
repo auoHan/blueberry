@@ -13,25 +13,34 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import {Component} from 'vue-property-decorator';
+import {Component, Prop, Watch} from 'vue-property-decorator';
 import {eventBus} from '@/main';
-import { Toast } from 'vant';
+import {Toast} from 'vant';
 
 Vue.use(Toast);
 @Component
 export default class Tags extends Vue {
+  @Prop(String) readonly type!: string;
   incomeShow = false;
   incomeClass = -1;
-  income:string[] = ["工资","兼职","理财","其他"];
-  mounted():void{
+  income: string[] = ['工资', '兼职', '理财', '其他'];
+
+  mounted(): void {
     eventBus.$emit('expense-show', this.incomeShow);
   }
+
   //点击li后添加样式，并传参给RemarksCount组件，控制RemarksCount组件是否显示
   addIncomeClass(index: number, tagName: string) {
     this.incomeClass = index;
     this.incomeShow = true;
     eventBus.$emit('income-show', this.incomeShow);
     this.$emit('value', tagName);
+  }
+
+  @Watch('type')
+  onTypeChange() {
+    this.incomeShow = false;
+    this.incomeClass = -1;
   }
 }
 </script>
@@ -41,8 +50,6 @@ export default class Tags extends Vue {
 
 .tags {
   padding: 16px 16px;
-  flex: 1;
-  overflow: auto;
 
   > .current {
     display: flex;

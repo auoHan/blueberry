@@ -1,9 +1,15 @@
 <template>
   <!-- money页面 -->
   <div class="money">
-    <Types :value.sync="record.type"/>
-    <ExpenseTags @value="onUpdateTag" v-if="record.type==='-'"/>
-    <IncomeTags @value="onUpdateTag" v-else-if="record.type==='+'"/>
+    <Types :value.sync="record.type" @selected-index="selectedIndex"/>
+    <van-swipe :loop="false" :show-indicators="false" @change="onSwipeChange" :initial-swipe="swiperIndex">
+      <van-swipe-item>
+        <ExpenseTags @value="onUpdateTag" :type="record.type"/>
+      </van-swipe-item>
+      <van-swipe-item>
+        <IncomeTags @value="onUpdateTag" :type="record.type"/>
+      </van-swipe-item>
+    </van-swipe>
     <RemarksCount @value="onUpdateRemarksCount" @submit="saveRecord" :type="record.type"/>
   </div>
 </template>
@@ -16,8 +22,10 @@ import ExpenseTags from '@/components/Money/ExpenseTags.vue';
 import IncomeTags from '@/components/Money/IncomeTags.vue';
 import RemarksCount from '@/components/Money/RemarksCount.vue';
 import {model} from '@/model';
+import {Swipe, SwipeItem} from 'vant';
 
-
+Vue.use(Swipe);
+Vue.use(SwipeItem);
 @Component({
   components: {IncomeTags, ExpenseTags, RemarksCount, Types}
 })
@@ -27,8 +35,22 @@ export default class Money extends Vue {
     type: '-',
     remarksCount: []
   };
+  swiperIndex = '0';
   //从model的fetch中读取localStorage
   records = model.fetch();
+
+  //轮播改变的索引值
+  onSwipeChange(index: number) {
+    this.swiperIndex = index.toString();
+    this.record.type === '-' ? this.record.type = '+' : this.record.type = '-';
+    console.log(index);
+  }
+
+  //从子组件传来选中的index
+  selectedIndex(index: number) {
+    this.swiperIndex = index.toString();
+    console.log(this.swiperIndex);
+  }
 
   onUpdateTag(value: string) {
     this.record.tag = value;
@@ -51,17 +73,24 @@ export default class Money extends Vue {
   @Watch('records')
   onRecordsChange() {
     //写入model的save中的localStorage
-    model.save(this.records)
+    model.save(this.records);
   }
 }
 </script>
 
 <style lang="scss" scoped>
 
-
 .money {
   display: flex;
   flex-direction: column;
   height: 100vh;
+}
+
+::v-deep .van-swipe {
+  flex: 1;
+}
+
+::v-deep .van-swipe-item {
+  overflow-y: auto;
 }
 </style>

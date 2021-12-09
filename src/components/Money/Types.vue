@@ -2,8 +2,8 @@
   <!-- 收入支出类型 -->
   <div class="type">
     <ul>
-      <li :class="value==='-' && 'selected'" @click="selectType('-')">支出</li>
-      <li :class="value==='+' && 'selected'" @click="selectType('+')">收入</li>
+      <li :class="value==='-' && 'selected' " @click="selectType('-',0)">支出</li>
+      <li :class="value==='+' && 'selected' " @click="selectType('+',1)">收入</li>
     </ul>
     <router-link to="/detail" class="cancel">取消</router-link>
   </div>
@@ -11,17 +11,19 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import {Component,Prop} from 'vue-property-decorator';
+import {Component, Prop} from 'vue-property-decorator';
 
 @Component
 export default class Types extends Vue {
-  @Prop(String) readonly value!:string
-  selectType(type: string) {
+  @Prop(String) readonly value!: string;
+
+  selectType(type: string, index: number) {
     if (type !== '-' && type !== '+') {
       throw new Error('type is unknown');
     }
     //父组件中用到了.sync的话，子组件中的发射事件名称必须为update:开头，加上事件名
-    this.$emit('update:value',type)
+    this.$emit('update:value', type);
+    this.$emit('selected-index', index);
   }
 }
 </script>
