@@ -5,8 +5,7 @@
     </template>
 
     <template v-slot:default>
-      <p>A paragraph for the main content.</p>
-      <p>And another one.</p>
+      <AmountDetails/>
     </template>
   </Layout>
 </template>
@@ -16,8 +15,9 @@ import Vue from 'vue';
 import {Component} from 'vue-property-decorator';
 import Layout from '@/components/Layout.vue';
 import Types from '@/components/Detail/Types.vue';
+import AmountDetails from '@/components/Detail/AmountDetails.vue';
 @Component({
-  components: {Types, Layout}
+  components: {AmountDetails, Types, Layout}
 })
 export default class Detail extends Vue {
 
