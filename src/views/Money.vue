@@ -43,30 +43,25 @@ export default class Money extends Vue {
   onSwipeChange(index: number) {
     this.swiperIndex = index.toString();
     this.record.type === '-' ? this.record.type = '+' : this.record.type = '-';
-    console.log(index);
   }
 
   //从子组件传来选中的index
   selectedIndex(index: number) {
     this.swiperIndex = index.toString();
-    console.log(this.swiperIndex);
   }
 
   onUpdateTag(value: string) {
     this.record.tag = value;
-    console.log(value);
   }
 
   onUpdateRemarksCount(value: string[]) {
     this.record.remarksCount = value;
-    console.log(value);
   }
 
   saveRecord() {
     //深拷贝，重新创建一个新的对象
     const deepClone = model.clone(this.record);
     this.records.push(deepClone);
-    console.log(this.records);
   }
 
   //records改变时保存数据

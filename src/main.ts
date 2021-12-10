@@ -3,7 +3,7 @@ import App from './App.vue'
 import './registerServiceWorker'
 import router from './router'
 import store from './store'
-import Nav from '@/components/Footer.vue';
+import FooterNav from '@/components/FooterNav.vue';
 import Layout from '@/components/Layout.vue';
 import Icon from '@/components/Icon.vue';
 import 'animate.css';
@@ -11,7 +11,7 @@ import 'animate.css';
 export const eventBus = new Vue()
 
 Vue.config.productionTip = false
-Vue.component('Nav',Nav)
+Vue.component('FooterNav',FooterNav)
 Vue.component('Layout',Layout)
 Vue.component('Icon',Icon)
 

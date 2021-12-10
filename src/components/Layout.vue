@@ -1,16 +1,21 @@
 <template>
   <div class="layout-wrapper">
-    <div class="content">
+    <slot name="header"/>
+    <main class="content">
       <slot/>
-    </div>
-    <Nav/>
+    </main>
+    <FooterNav/>
   </div>
 </template>
 
 <script lang="ts">
-export default {
-  name: 'Layout'
-};
+import Vue from 'vue';
+import {Component} from 'vue-property-decorator';
+
+@Component
+export default class Layout extends Vue{
+
+}
 </script>
 
 <style lang="scss" scoped>

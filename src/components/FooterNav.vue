@@ -16,9 +16,12 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: 'Nav'
-};
+import Vue from 'vue';
+import {Component} from 'vue-property-decorator';
+@Component
+export default class FooterNav extends Vue{
+
+}
 </script>
 
 <style lang="scss" scoped>
