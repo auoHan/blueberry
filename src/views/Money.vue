@@ -21,7 +21,7 @@ import Types from '@/components/Money/Types.vue';
 import ExpenseTags from '@/components/Money/ExpenseTags.vue';
 import IncomeTags from '@/components/Money/IncomeTags.vue';
 import RemarksCount from '@/components/Money/RemarksCount.vue';
-import {model} from '@/model';
+import {recordListModel} from '@/models/recordListModel';
 import {Swipe, SwipeItem} from 'vant';
 
 Vue.use(Swipe);
@@ -37,7 +37,7 @@ export default class Money extends Vue {
   };
   swiperIndex = '0';
   //从model的fetch中读取localStorage
-  records = model.fetch();
+  records = recordListModel.fetch();
 
   //轮播改变的索引值
   onSwipeChange(index: number) {
@@ -60,7 +60,7 @@ export default class Money extends Vue {
 
   saveRecord() {
     //深拷贝，重新创建一个新的对象
-    const deepClone = model.clone(this.record);
+    const deepClone = recordListModel.clone(this.record);
     this.records.push(deepClone);
   }
 
@@ -68,7 +68,7 @@ export default class Money extends Vue {
   @Watch('records')
   onRecordsChange() {
     //写入model的save中的localStorage
-    model.save(this.records);
+    recordListModel.save(this.records);
   }
 }
 </script>

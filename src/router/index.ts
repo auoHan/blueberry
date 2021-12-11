@@ -4,7 +4,7 @@ import Money from '@/views/Money.vue';
 import Detail from '@/views/Detail.vue';
 import Statistics from '@/views/Statistics.vue';
 import NotFound from '@/views/NotFound.vue';
-import ExpenseTags from '@/views/ExpenseTags.vue';
+import ExpenseTags from '@/views/AddExpenseTags.vue';
 
 Vue.use(VueRouter);
 
