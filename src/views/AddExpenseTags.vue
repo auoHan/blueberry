@@ -15,10 +15,10 @@
         <li v-for="(icons,key,index) in types" :key="index">
           {{ key }}
           <ul class="type-ul">
-            <li v-for="(icon,index) in icons" :key="index" @click="addActiveClass(index,key,icon)">
-              <Icon :icon-name=icon class="icon-type"
-                    :class="key===activeClassKey && index===activeClassIndex && 'selected'"/>
-              <span :class="key===activeClassKey && index===activeClassIndex && 'selected'">{{ icon }}</span>
+            <li v-for="(icon) in icons" :key="icon.id" @click="addActiveClass(icon.id,key,icon.name)">
+              <Icon :icon-name="icon.name" class="icon-type"
+                    :class="key===activeClassKey && icon.id===activeClassIndex && 'selected'"/>
+              <span :class="key===activeClassKey && icon.id===activeClassIndex && 'selected'">{{ icon.name }}</span>
             </li>
           </ul>
         </li>
@@ -32,28 +32,53 @@ import Vue from 'vue';
 import {Component} from 'vue-property-decorator';
 import PubSub from 'pubsub-js';
 import {Toast} from 'vant';
+import {nanoid} from 'nanoid';
 
 Vue.use(Toast);
 @Component
 export default class extends Vue {
   //类型分类
   types = {
-    学习: ['乐器', '书籍', '学费', '台灯', '学习工具', '画画', '计算器'],
-    办公: ['办公桌', '打印机', '电脑', '路由器', '键盘', '鼠标'],
-    医疗: ['打针', '门诊', '检查', '看牙', '怀孕'],
-    家庭: ['玩具', '奶瓶', '婴儿车', '奶嘴'],
-    家居: ['沙发', '热水器', '洗衣机', '电视机', '空调', '电灯', '工具', '微波炉'],
-    健身: ['哑铃', '跑步机', '跳绳', '瑜伽', '拳击'],
+    学习: [{id: nanoid(10), name: '乐器'}, {id: nanoid(10), name: '书籍'}, {id: nanoid(10), name: '学费'}, {
+      id: nanoid(10),
+      name: '台灯'
+    }, {id: nanoid(10), name: '学习工具'}, {id: nanoid(10), name: '画画'}, {id: nanoid(10), name: '计算器'}],
+    办公: [{id: nanoid(10), name: '办公桌'}, {id: nanoid(10), name: '打印机'}, {id: nanoid(10), name: '电脑'}, {
+      id: nanoid(10),
+      name: '路由器'
+    }, {id: nanoid(10), name: '键盘'}, {id: nanoid(10), name: '鼠标'}],
+    医疗: [{id: nanoid(10), name: '打针'}, {id: nanoid(10), name: '门诊'}, {id: nanoid(10), name: '检查'}, {
+      id: nanoid(10),
+      name: '看牙'
+    }, {id: nanoid(10), name: '怀孕'}],
+    家庭: [{id: nanoid(10), name: '玩具'}, {id: nanoid(10), name: '奶瓶'}, {id: nanoid(10), name: '婴儿车'}, {
+      id: nanoid(10),
+      name: '奶嘴'
+    }],
+    家居: [{id: nanoid(10), name: '沙发'}, {id: nanoid(10), name: '热水器'}, {id: nanoid(10), name: '洗衣机'}, {
+      id: nanoid(10),
+      name: '电视机'
+    }, {id: nanoid(10), name: '空调'}, {id: nanoid(10), name: '电灯'}, {id: nanoid(10), name: '工具'}, {
+      id: nanoid(10),
+      name: '微波炉'
+    }],
+    健身: [{id: nanoid(10), name: '哑铃'}, {id: nanoid(10), name: '跑步机'}, {id: nanoid(10), name: '跳绳'}, {
+      id: nanoid(10),
+      name: '瑜伽'
+    }, {id: nanoid(10), name: '拳击'}],
   };
-  activeClassIndex = -1;
+  activeClassIndex = '-1';
   activeClassKey = '';
-  selectedIcon = '';
+  selectedIcon:Tag = {
+    id:'',
+    name:''
+  };
 
   //点击Icon添加样式，把当前Icon传给selectedIcon
-  addActiveClass(index: number, key: string, icon: string) {
-    this.activeClassIndex = index;
+  addActiveClass(id: string, key: string, name: string) {
+    this.activeClassIndex = id;
     this.activeClassKey = key;
-    this.selectedIcon = icon;
+    this.selectedIcon = {id,name};
     console.log(this.selectedIcon);
   }
 
@@ -64,7 +89,7 @@ export default class extends Vue {
 
   //成功跳转到Money组件页面，并传值，目前还没传
   addTag() {
-    if (this.selectedIcon===''){
+    if (this.selectedIcon.id==='') {
       Toast.fail('请选择要添加的标签！');
       return;
     }

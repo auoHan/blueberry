@@ -3,9 +3,9 @@
   <div class="tags">
     <!--  收入展示  -->
     <ul class="current">
-      <li v-for="(tagName,index) in income" :key="tagName" @click="addIncomeClass(index,tagName)">
-        <Icon :icon-name="tagName" class="tags-icon" :class="index===incomeClass && 'selected'"/>
-        <span :class="index===incomeClass && 'selected'">{{ tagName }}</span>
+      <li v-for="(tagObj) in income" :key="tagObj.id" @click="addIncomeClass(tagObj.id,tagObj.name)">
+        <Icon :icon-name="tagObj.name" class="tags-icon" :class="tagObj.id===incomeClass && 'selected'"/>
+        <span :class="tagObj.id===incomeClass && 'selected'">{{ tagObj.name }}</span>
       </li>
     </ul>
   </div>
@@ -16,22 +16,24 @@ import Vue from 'vue';
 import {Component, Prop, Watch} from 'vue-property-decorator';
 import {eventBus} from '@/main';
 import {Toast} from 'vant';
+import {nanoid} from 'nanoid';
 
 Vue.use(Toast);
 @Component
 export default class Tags extends Vue {
   @Prop(String) readonly type!: string;
   incomeShow = false;
-  incomeClass = -1;
-  income: string[] = ['工资', '兼职', '理财', '其他'];
+  incomeClass = '-1';
+  income:Tag[] = [{id:nanoid(10) ,name:'工资'},{id:nanoid(10) ,name:'兼职'},{id:nanoid(10) ,name:'理财'},{id:nanoid(10) ,name:'其他'}];
 
   mounted(): void {
     eventBus.$emit('expense-show', this.incomeShow);
+    console.log(this.income);
   }
 
   //点击li后添加样式，并传参给RemarksCount组件，控制RemarksCount组件是否显示
-  addIncomeClass(index: number, tagName: string) {
-    this.incomeClass = index;
+  addIncomeClass(id: string, tagName: string) {
+    this.incomeClass = id;
     this.incomeShow = true;
     eventBus.$emit('income-show', this.incomeShow);
     this.$emit('value', tagName);
@@ -40,7 +42,7 @@ export default class Tags extends Vue {
   @Watch('type')
   onTypeChange() {
     this.incomeShow = false;
-    this.incomeClass = -1;
+    this.incomeClass = '-1';
   }
 }
 </script>

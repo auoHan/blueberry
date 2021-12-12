@@ -3,9 +3,9 @@
   <div class="tags">
     <!--  支出展示  -->
     <ul class="current">
-      <li v-for="(tagName,index) in expense" :key="tagName" @click="addExpenseClass(index,tagName)">
-        <Icon :icon-name="tagName" class="tags-icon" :class="index===expenseClass && 'selected'"/>
-        <span :class="index===expenseClass && 'selected'">{{ tagName }}</span>
+      <li v-for="(tagObj) in expense" :key="tagObj.id" @click="addExpenseClass(tagObj.id,tagObj.name)">
+        <Icon :icon-name="tagObj.name" class="tags-icon" :class="tagObj.id===expenseClass && 'selected'"/>
+        <span :class="tagObj.id===expenseClass && 'selected'">{{ tagObj.name }}</span>
       </li>
       <li @click="addExpenseTags">
         <Icon icon-name="添加" class="tags-icon"/>
@@ -28,19 +28,19 @@ Vue.use(Toast);
 export default class Tags extends Vue {
   @Prop(String) readonly type!: string;
   expenseShow = false;
-  expenseClass = -1;
+  expenseClass = '-1';
   //'["餐饮", "交通", "日用", "水果", "蔬菜", "购物"]'此处数组里面的元素必须双引号，因为localStorage存储的数组的元素是双引号的
   //tagIcons: string[] = ["餐饮", "交通", "日用", "水果", "蔬菜", "购物"];
   //expense: string[] = JSON.parse(localStorage.getItem('expenseTag') || '["餐饮", "交通", "日用", "水果", "蔬菜", "购物"]');
-  expense:string[] = tagListModel.fetch();
+  expense:Tag[] = tagListModel.fetch();
 
   //点击li后添加样式，并传参给RemarksCount组件，控制RemarksCount组件是否显示
   mounted(): void {
     eventBus.$emit('expense-show', this.expenseShow);
   }
 
-  addExpenseClass(index: number, tagName: string) {
-    this.expenseClass = index;
+  addExpenseClass(id: string, tagName: string) {
+    this.expenseClass = id;
     this.expenseShow = true;
     eventBus.$emit('expense-show', this.expenseShow);
     this.$emit('value', tagName);
@@ -53,7 +53,7 @@ export default class Tags extends Vue {
 
   created(): void {
     //订阅消息
-    PubSub.subscribe('expense-tag', (_: string, newTag: string) => {
+    PubSub.subscribe('expense-tag', (_: string, newTag: Tag) => {
       if (this.expense.includes(newTag)) {
         Toast.fail('请勿重复添加');
         return;
@@ -72,7 +72,7 @@ export default class Tags extends Vue {
   @Watch('type')
   onTypeChange() {
     this.expenseShow = false;
-    this.expenseClass = -1;
+    this.expenseClass = '-1';
   }
 }
 </script>
