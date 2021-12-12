@@ -1,11 +1,13 @@
 const localStorageKeyName = 'expenseTag';
 
 const tagListModel = {
+  data: [] as string[],
   fetch() {
-    return JSON.parse(localStorage.getItem(localStorageKeyName) || '["餐饮", "交通", "日用", "水果", "蔬菜", "购物"]');
+    this.data = JSON.parse(localStorage.getItem(localStorageKeyName) || '["餐饮", "交通", "日用", "水果", "蔬菜", "购物"]');
+    return this.data;
   },
-  save(data: string[]) {
-    localStorage.setItem(localStorageKeyName, JSON.stringify(data));
+  save() {
+    localStorage.setItem(localStorageKeyName, JSON.stringify(this.data));
   }
 };
 export {tagListModel};

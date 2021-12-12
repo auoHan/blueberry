@@ -66,7 +66,7 @@ export default class Tags extends Vue {
   @Watch('expense')
   onExpenseChange() {
     // localStorage.setItem('expenseTag', JSON.stringify(this.expense));
-    tagListModel.save(this.expense);
+    tagListModel.save();
   }
 
   @Watch('type')

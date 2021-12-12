@@ -2,7 +2,12 @@
   <!-- money页面 -->
   <div class="money">
     <Types :value.sync="record.type" @selected-index="selectedIndex"/>
-    <van-swipe :loop="false" :show-indicators="false" @change="onSwipeChange" :initial-swipe="swiperIndex">
+    <van-swipe
+      :loop="false"
+      :show-indicators="false"
+      @change="onSwipeChange"
+      :initial-swipe="swiperIndex"
+    >
       <van-swipe-item>
         <ExpenseTags @value="onUpdateTag" :type="record.type"/>
       </van-swipe-item>
@@ -38,7 +43,6 @@ export default class Money extends Vue {
   swiperIndex = '0';
   //从model的fetch中读取localStorage
   records = recordListModel.fetch();
-
   //轮播改变的索引值
   onSwipeChange(index: number) {
     this.swiperIndex = index.toString();
@@ -60,15 +64,14 @@ export default class Money extends Vue {
 
   saveRecord() {
     //深拷贝，重新创建一个新的对象
-    const deepClone = recordListModel.clone(this.record);
-    this.records.push(deepClone);
+    recordListModel.createItem(this.record)
   }
 
   //records改变时保存数据
   @Watch('records')
   onRecordsChange() {
     //写入model的save中的localStorage
-    recordListModel.save(this.records);
+    recordListModel.save();
   }
 }
 </script>
