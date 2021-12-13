@@ -188,7 +188,7 @@ export default class RemarksCount extends Vue {
         this.sum = this.sum.substring(0, this.sum.length - 1) + key;
       }
     } else {
-      if (this.sum.length === 16) {
+      if (this.sum.length===16){
         return;
       }
       if ((this.sum === '0' || this.sum === '0.00') && key !== '+' && key !== '-') {
@@ -206,7 +206,7 @@ export default class RemarksCount extends Vue {
       } else if (this.sum.charAt(this.sum.length - 3) === '.') {
         return;
       } else {
-        this.sum += key;
+        this.sum+=key;
       }
     }
   }
@@ -215,6 +215,10 @@ export default class RemarksCount extends Vue {
   amount() {
     //字符串"1+1"运算可以用到eval函数，得到的值是number类型的数字
     let sum = eval(this.sum);
+    if (sum>999999999){
+      Toast.fail('数值过大，计算失败')
+      return;
+    }
     //如果有小数，保留两位小数或者一位小数
     this.sum = (Math.round(sum * 100) / 100).toString();
 
@@ -222,6 +226,10 @@ export default class RemarksCount extends Vue {
 
   //点击完成按钮后传值
   complete() {
+    if (parseFloat(this.sum)>999999999){
+      Toast.fail('数值过大，提交失败')
+      return;
+    }
     const emitComplete = (sum: string) => {
       this.$emit('value', [sum, this.note, this.dateSelected]);
       this.$emit('submit', [sum, this.note, this.dateSelected]);
