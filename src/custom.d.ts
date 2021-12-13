@@ -9,6 +9,5 @@ type Tag = {
 }
 
 interface Window{
-  fetchExpenseList:Tag[],
-  updateExpenseList:void
+
 }

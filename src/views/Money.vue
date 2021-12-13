@@ -21,12 +21,12 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import {Component, Watch} from 'vue-property-decorator';
+import {Component} from 'vue-property-decorator';
 import Types from '@/components/Money/Types.vue';
 import ExpenseTags from '@/components/Money/ExpenseTags.vue';
 import IncomeTags from '@/components/Money/IncomeTags.vue';
 import RemarksCount from '@/components/Money/RemarksCount.vue';
-import {recordListModel} from '@/models/recordListModel';
+import {store} from '@/store/index2';
 import {Swipe, SwipeItem} from 'vant';
 
 Vue.use(Swipe);
@@ -41,15 +41,14 @@ export default class Money extends Vue {
     remarksCount: []
   };
   swiperIndex = '0';
-  //从model的fetch中读取localStorage
-  records = recordListModel.fetch();
+  records = store.recordList;
   //轮播改变的索引值
   onSwipeChange(index: number) {
     this.swiperIndex = index.toString();
     this.record.type === '-' ? this.record.type = '+' : this.record.type = '-';
   }
 
-  //从子组件传来选中的index
+  //从Type子组件传来选中的index
   selectedIndex(index: number) {
     this.swiperIndex = index.toString();
   }
@@ -64,14 +63,7 @@ export default class Money extends Vue {
 
   saveRecord() {
     //深拷贝，重新创建一个新的对象
-    recordListModel.createItem(this.record)
-  }
-
-  //records改变时保存数据
-  @Watch('records')
-  onRecordsChange() {
-    //写入model的save中的localStorage
-    recordListModel.save();
+    store.createRecord(this.record)
   }
 }
 </script>
