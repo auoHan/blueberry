@@ -18,6 +18,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import {Component, Watch, Prop} from 'vue-property-decorator';
+import {store} from '@/store/index2';
 import {eventBus} from '@/main';
 import PubSub from 'pubsub-js';
 import {Toast} from 'vant';
@@ -29,21 +30,22 @@ export default class Tags extends Vue {
   expenseShow = false;
   expenseClass = '-1';
   tokenId = '';
-  //'["餐饮", "交通", "日用", "水果", "蔬菜", "购物"]'此处数组里面的元素必须双引号，因为localStorage存储的数组的元素是双引号的
-  //tagIcons: string[] = ["餐饮", "交通", "日用", "水果", "蔬菜", "购物"];
-  //expense: string[] = JSON.parse(localStorage.getItem('expenseTag') || '["餐饮", "交通", "日用", "水果", "蔬菜", "购物"]');
-  expense = window.fetchExpenseList;
+  expense = store.tagList;
 
-  created():void{
+  created(): void {
     //订阅消息
     this.tokenId = PubSub.subscribe('expense-tag', (_: string, newTag: Tag) => {
-      this.expense.push(newTag);
+      if (newTag.id===''){
+        return;
+      }
+      store.createTag(newTag);
     });
   }
 
-  beforeDestroy():void{
+  beforeDestroy(): void {
     PubSub.unsubscribe(this.tokenId);
   }
+
   //点击li后添加样式，并传参给RemarksCount组件，控制RemarksCount组件是否显示
   addExpenseClass(id: string, tagName: string) {
     this.expenseClass = id;
@@ -55,14 +57,6 @@ export default class Tags extends Vue {
   //添加支出标签跳转路由
   addExpenseTags() {
     this.$router.push({path: '/expense'});
-  }
-
-  //expense改变时保存数据
-  @Watch('expense')
-  onExpenseChange() {
-    // localStorage.setItem('expenseTag', JSON.stringify(this.expense));
-     //tagListModel.update();
-    window.updateExpenseList
   }
 
   @Watch('type')

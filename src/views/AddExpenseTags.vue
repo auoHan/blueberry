@@ -30,6 +30,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import {Component} from 'vue-property-decorator';
+import {store} from '@/store/index2';
 import PubSub from 'pubsub-js';
 import {Toast} from 'vant';
 import {nanoid} from 'nanoid';
@@ -79,11 +80,14 @@ export default class extends Vue {
     this.activeClassIndex = id;
     this.activeClassKey = key;
     this.selectedIcon = {id,name};
-    console.log(this.selectedIcon);
   }
 
   //返回跳转到Money组件页面
   back() {
+    this.selectedIcon = {
+      id:'',
+      name:''
+    };
     this.$router.push({path: '/money'});
   }
 
@@ -92,7 +96,7 @@ export default class extends Vue {
     if (this.selectedIcon.id==='') {
       Toast.fail('请选择要添加的标签');
       return;
-    }else if (window.fetchExpenseList.map(tagObj=>tagObj.name).includes(this.selectedIcon.name)){
+    }else if (store.tagList.map(tagObj=>tagObj.name).includes(this.selectedIcon.name)){
       Toast.fail('请勿重复添加');
       return;
     }
