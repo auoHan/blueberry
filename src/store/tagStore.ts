@@ -1,7 +1,7 @@
 import {nanoid} from 'nanoid';
 import {clone} from '@/lib/clone';
 const localStorageKeyName = 'expenseTag';
-export const tagStore =  {
+const tagStore =  {
   tagList: [] as Tag[],
   fetchTags() {
     this.tagList = JSON.parse(localStorage.getItem(localStorageKeyName)
@@ -23,3 +23,4 @@ export const tagStore =  {
   }
 }
 tagStore.fetchTags();
+export {tagStore}

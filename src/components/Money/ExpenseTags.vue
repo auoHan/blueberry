@@ -24,18 +24,23 @@ import PubSub from 'pubsub-js';
 import {Toast} from 'vant';
 
 Vue.use(Toast);
-@Component
+@Component({
+  computed: {
+    expense() {
+      return store.tagList;
+    }
+  }
+})
 export default class Tags extends Vue {
   @Prop(String) readonly type!: string;
   expenseShow = false;
   expenseClass = '-1';
   tokenId = '';
-  expense = store.tagList;
 
   created(): void {
     //订阅消息
     this.tokenId = PubSub.subscribe('expense-tag', (_: string, newTag: Tag) => {
-      if (newTag.id===''){
+      if (newTag.id === '') {
         return;
       }
       store.createTag(newTag);
