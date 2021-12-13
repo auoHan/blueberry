@@ -7,3 +7,8 @@ type Tag = {
   id:string,
   name:string
 }
+
+interface Window{
+  fetchExpenseList:Tag[],
+  updateExpenseList:void
+}

@@ -26,10 +26,6 @@ export default class Tags extends Vue {
   incomeClass = '-1';
   income:Tag[] = [{id:nanoid(10) ,name:'工资'},{id:nanoid(10) ,name:'兼职'},{id:nanoid(10) ,name:'理财'},{id:nanoid(10) ,name:'其他'}];
 
-  mounted(): void {
-    eventBus.$emit('expense-show', this.incomeShow);
-    console.log(this.income);
-  }
 
   //点击li后添加样式，并传参给RemarksCount组件，控制RemarksCount组件是否显示
   addIncomeClass(id: string, tagName: string) {

@@ -90,7 +90,11 @@ export default class RemarksCount extends Vue {
       this.sum = '0';
     });
   }
-
+  //销毁事件
+  beforeDestroy():void{
+    eventBus.$off('expense-show');
+    eventBus.$off('income-show');
+  }
   //鼠标点击或者手指按压按钮，改变当前按钮样式，其他按钮不变
   addActiveClass(index: number) {
     this.activeClass = index;

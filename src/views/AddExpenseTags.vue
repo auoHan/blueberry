@@ -90,12 +90,18 @@ export default class extends Vue {
   //成功跳转到Money组件页面，并传值，目前还没传
   addTag() {
     if (this.selectedIcon.id==='') {
-      Toast.fail('请选择要添加的标签！');
+      Toast.fail('请选择要添加的标签');
+      return;
+    }else if (window.fetchExpenseList.map(tagObj=>tagObj.name).includes(this.selectedIcon.name)){
+      Toast.fail('请勿重复添加');
       return;
     }
+    this.$router.push({path: '/money'})
+  }
+  beforeDestroy():void{
+    //eventBus.$emit('expense-tag', this.selectedIcon)
     //发布消息
     PubSub.publish('expense-tag', this.selectedIcon);
-    this.$router.push({path: '/money'});
   }
 }
 </script>

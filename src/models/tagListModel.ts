@@ -14,7 +14,7 @@ const tagListModel = {
     console.log(this.data);
     return this.data;
   },
-  save() {
+  update() {
     localStorage.setItem(localStorageKeyName, JSON.stringify(this.data));
   }
 };
