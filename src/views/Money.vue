@@ -26,7 +26,6 @@ import Types from '@/components/Money/Types.vue';
 import ExpenseTags from '@/components/Money/ExpenseTags.vue';
 import IncomeTags from '@/components/Money/IncomeTags.vue';
 import RemarksCount from '@/components/Money/RemarksCount.vue';
-import {store} from '@/store/index2';
 import {Swipe, SwipeItem} from 'vant';
 
 Vue.use(Swipe);
@@ -35,7 +34,7 @@ Vue.use(SwipeItem);
   components: {IncomeTags, ExpenseTags, RemarksCount, Types},
   computed: {
     records() {
-      return store.recordList;
+      return this.$store.state.records;
     }
   }
 })
@@ -46,6 +45,10 @@ export default class Money extends Vue {
     remarksCount: []
   };
   swiperIndex = '0';
+
+  beforeCreate():void{
+    this.$store.commit('fetchRecords');
+  }
 
   //轮播改变的索引值
   onSwipeChange(index: number) {
@@ -68,7 +71,7 @@ export default class Money extends Vue {
 
   saveRecord() {
     //深拷贝，重新创建一个新的对象
-    store.createRecord(this.record);
+    this.$store.commit('createRecord',this.record);
   }
 }
 </script>

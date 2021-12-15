@@ -1,6 +1,7 @@
 <template>
   <!-- 标签显示 -->
   <div class="tags">
+    {{expense}}
     <!--  支出展示  -->
     <ul class="current">
       <li v-for="(tagObj) in expense" :key="tagObj.id" @click="addExpenseClass(tagObj.id,tagObj.name)">
@@ -18,7 +19,6 @@
 <script lang="ts">
 import Vue from 'vue';
 import {Component, Watch, Prop} from 'vue-property-decorator';
-import {store} from '@/store/index2';
 import {eventBus} from '@/main';
 import PubSub from 'pubsub-js';
 import {Toast} from 'vant';
@@ -27,7 +27,7 @@ Vue.use(Toast);
 @Component({
   computed: {
     expense() {
-      return store.tagList;
+      return this.$store.state.tags;
     }
   }
 })
@@ -37,13 +37,17 @@ export default class Tags extends Vue {
   expenseClass = '-1';
   tokenId = '';
 
+  beforeCreate():void{
+    this.$store.commit('fetchTags');
+  }
+
   created(): void {
     //订阅消息
     this.tokenId = PubSub.subscribe('expense-tag', (_: string, newTag: Tag) => {
       if (newTag.id === '') {
         return;
       }
-      store.createTag(newTag);
+      this.$store.commit('createTag',newTag);
     });
   }
 

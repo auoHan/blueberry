@@ -30,7 +30,6 @@
 <script lang="ts">
 import Vue from 'vue';
 import {Component} from 'vue-property-decorator';
-import {store} from '@/store/index2';
 import PubSub from 'pubsub-js';
 import {Toast} from 'vant';
 import {nanoid} from 'nanoid';
@@ -70,39 +69,44 @@ export default class extends Vue {
   };
   activeClassIndex = '-1';
   activeClassKey = '';
-  selectedIcon:Tag = {
-    id:'',
-    name:''
+  selectedIcon: Tag = {
+    id: '',
+    name: ''
   };
+
+  beforeCreate(): void {
+    this.$store.commit('fetchTags');
+  }
 
   //点击Icon添加样式，把当前Icon传给selectedIcon
   addActiveClass(id: string, key: string, name: string) {
     this.activeClassIndex = id;
     this.activeClassKey = key;
-    this.selectedIcon = {id,name};
+    this.selectedIcon = {id, name};
   }
 
   //返回跳转到Money组件页面
   back() {
     this.selectedIcon = {
-      id:'',
-      name:''
+      id: '',
+      name: ''
     };
     this.$router.push({path: '/money'});
   }
 
   //成功跳转到Money组件页面，并传值，目前还没传
   addTag() {
-    if (this.selectedIcon.id==='') {
+    if (this.selectedIcon.id === '') {
       Toast.fail('请选择要添加的标签');
       return;
-    }else if (store.tagList.map(tagObj=>tagObj.name).includes(this.selectedIcon.name)){
+    } else if (this.$store.state.tags.map((tagObj: { name: string; }) => tagObj.name).includes(this.selectedIcon.name)) {
       Toast.fail('请勿重复添加');
       return;
     }
-    this.$router.push({path: '/money'})
+    this.$router.push({path: '/money'});
   }
-  beforeDestroy():void{
+
+  beforeDestroy(): void {
     //eventBus.$emit('expense-tag', this.selectedIcon)
     //发布消息
     PubSub.publish('expense-tag', this.selectedIcon);
