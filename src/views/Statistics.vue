@@ -1,7 +1,7 @@
 <template>
   <Layout>
     <template v-slot:header>
-      statistics
+      <Types/>
     </template>
 
     <template v-slot:default>
@@ -12,10 +12,15 @@
 </template>
 
 <script lang="ts">
+import Vue from 'vue';
+import {Component} from 'vue-property-decorator';
+import Types from '@/components/Statistics/Types.vue';
+@Component({
+  components: {Types}
+})
+export default class Statistics extends Vue{
 
-export default {
-  name: 'statistics',
-};
+}
 </script>
 
 <style lang="scss" scoped>

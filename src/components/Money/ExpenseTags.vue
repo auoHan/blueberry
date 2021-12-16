@@ -1,7 +1,6 @@
 <template>
   <!-- 标签显示 -->
   <div class="tags">
-    {{expense}}
     <!--  支出展示  -->
     <ul class="current">
       <li v-for="(tagObj) in expense" :key="tagObj.id" @click="addExpenseClass(tagObj.id,tagObj.name)">
