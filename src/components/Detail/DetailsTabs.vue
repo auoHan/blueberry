@@ -26,7 +26,7 @@
 import Vue from 'vue';
 import {Component} from 'vue-property-decorator'
 @Component
-export default class Type extends Vue {
+export default class DetailsTabs extends Vue {
   incomeAmount = '111111111.00'
   expenseAmount = '111111111.00'
   created():void{

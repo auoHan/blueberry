@@ -1,7 +1,7 @@
 <template>
   <Layout>
     <template v-slot:header>
-      <Types/>
+      <DetailsTabs/>
     </template>
 
     <template v-slot:default>
@@ -14,10 +14,10 @@
 import Vue from 'vue';
 import {Component} from 'vue-property-decorator';
 import Layout from '@/components/Layout.vue';
-import Types from '@/components/Detail/Types.vue';
+import DetailsTabs from '@/components/Detail/DetailsTabs.vue';
 import AmountDetails from '@/components/Detail/AmountDetails.vue';
 @Component({
-  components: {AmountDetails, Types, Layout}
+  components: {AmountDetails, DetailsTabs, Layout}
 })
 export default class Detail extends Vue {
 

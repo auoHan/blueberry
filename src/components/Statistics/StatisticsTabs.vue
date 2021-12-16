@@ -1,11 +1,11 @@
 <template>
   <header class="header">
     <van-dropdown-menu>
-      <van-dropdown-item v-model="value1" :options="option1"/>
+      <van-dropdown-item v-model="type" :options="typeOption"/>
     </van-dropdown-menu>
     <ul class="ul-time">
-      <li v-for="item in option2" :key="item.value" :class="{selected:item.value===value}"
-          @click="selectTime(item.value)">
+      <li v-for="item in intervalOption" :key="item.value" :class="{selected:item.value===interval}"
+          @click="selectedInterval(item.value)">
         <span>{{ item.text }}</span>
       </li>
     </ul>
@@ -20,21 +20,21 @@ import {DropdownMenu, DropdownItem} from 'vant';
 Vue.use(DropdownMenu);
 Vue.use(DropdownItem);
 @Component
-export default class Types extends Vue {
-  value1 = '-';
-  option1 = [
+export default class StatisticsTabs extends Vue {
+  type = '-';
+  typeOption = [
     {text: '支出', value: '-'},
     {text: '收入', value: '+'},
   ];
-  value = 'week';
-  option2 = [
+  interval = 'week';
+  intervalOption = [
     {text: '周', value: 'week'},
     {text: '月', value: 'month'},
     {text: '年', value: 'year'},
   ];
 
-  selectTime(value: string) {
-    this.value = value;
+  selectedInterval(value: string) {
+    this.interval = value;
   }
 }
 </script>
@@ -43,6 +43,7 @@ export default class Types extends Vue {
 @import "~@/assets/style/helper.scss";
 
 .header {
+    height: 102px;
   > .ul-time {
     position: absolute;
     left: 0;
@@ -78,26 +79,37 @@ export default class Types extends Vue {
     }
   }
 }
-
-::v-deep .van-dropdown-menu__bar {
-  box-shadow: none;
-  background-color: $color-navBar;
-}
-
-::v-deep .van-dropdown-menu__title {
-
-  padding: 12px 30px;
-  font-size: 18px;
-
-  &::after {
-    right: 16px;
-    margin-top: -6px;
-    border: 4px solid;
-    border-color: transparent transparent #333 #333;
+::v-deep {
+  .van-dropdown-menu{
+    padding-bottom: 50px;
   }
-}
+  .van-dropdown-menu__bar {
+    box-shadow: none;
+    background-color: $color-navBar;
+  }
+  .van-dropdown-menu__title {
 
-::v-deep .van-popup--top {
-  top: 53px;
+    padding: 12px 30px;
+    font-size: 18px;
+
+    &::after {
+      right: 16px;
+      margin-top: -6px;
+      border: 4px solid;
+      border-color: transparent transparent #333 #333;
+    }
+  }
+  .van-popup--top {
+    top: 53px;
+  }
+  .van-dropdown-item__option--active{
+    color: $color-navBar;
+  }
+  .van-dropdown-item__option--active .van-dropdown-item__icon{
+    color: $color-navBar;
+  }
+  .van-dropdown-menu__title--active{
+    color: white;
+  }
 }
 </style>

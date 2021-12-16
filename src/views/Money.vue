@@ -1,7 +1,7 @@
 <template>
   <!-- money页面 -->
   <div class="money">
-    <Types :value.sync="record.type" @selected-index="selectedIndex"/>
+    <MoneyTabs :value.sync="record.type" @selected-index="selectedIndex"/>
     <van-swipe
       :loop="false"
       :show-indicators="false"
@@ -22,7 +22,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import {Component} from 'vue-property-decorator';
-import Types from '@/components/Money/Types.vue';
+import MoneyTabs from '@/components/Money/MoneyTabs.vue';
 import ExpenseTags from '@/components/Money/ExpenseTags.vue';
 import IncomeTags from '@/components/Money/IncomeTags.vue';
 import RemarksCount from '@/components/Money/RemarksCount.vue';
@@ -31,7 +31,7 @@ import {Swipe, SwipeItem} from 'vant';
 Vue.use(Swipe);
 Vue.use(SwipeItem);
 @Component({
-  components: {IncomeTags, ExpenseTags, RemarksCount, Types},
+  components: {IncomeTags, ExpenseTags, RemarksCount, MoneyTabs},
   computed: {
     records() {
       return this.$store.state.records;
@@ -84,11 +84,12 @@ export default class Money extends Vue {
   height: 100vh;
 }
 
-::v-deep .van-swipe {
-  flex: 1;
-}
-
-::v-deep .van-swipe-item {
-  overflow-y: auto;
+::v-deep {
+  .van-swipe {
+    flex: 1;
+  }
+  .van-swipe-item {
+    overflow-y: auto;
+  }
 }
 </style>
