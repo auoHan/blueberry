@@ -1,7 +1,7 @@
 <template>
   <!-- 计算备注 -->
   <div class="remarks-count" v-if="countShow">
-    <DatePicker class="date-picker" v-if="dateShow" @date-picker="datePicker"/>
+    <MoneyDatePicker class="date-picker" v-if="dateShow" @date-picker="datePicker"/>
     <!-- 备注 -->
     <div class="remarks">
       <label class="notes">
@@ -55,13 +55,13 @@
 <script lang="ts">
 import Vue from 'vue';
 import {Component, Prop, Watch} from 'vue-property-decorator';
-import DatePicker from '@/components/Money/DatePicker.vue';
+import MoneyDatePicker from '@/components/Money/MoneyDatePicker.vue';
 import {eventBus} from '@/main';
 import {Toast} from 'vant';
 
 Vue.use(Toast);
 @Component({
-  components: {DatePicker}
+  components: {MoneyDatePicker}
 })
 export default class RemarksCount extends Vue {
   @Prop(String) readonly type!: string;

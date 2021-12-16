@@ -3,8 +3,8 @@
     <span class="title">蓝莓记账</span>
     <ul>
       <li class="time">
-        <span>2020年</span>
-        <span>12
+        <span>{{ dateSelected.split('/')[0] }}年</span>
+        <span @click="dateShow=true">{{ dateSelected.split('/')[1] }}
           <span style="font-size: 12px;">月</span>
           <Icon icon-name="下三角形" class="triangles"/>
         </span>
@@ -19,37 +19,69 @@
         <span v-html="this.expenseAmount">{{ expenseAmount }}</span>
       </li>
     </ul>
+    <DetailDatePicker @date-picker="datePicker" v-if="dateShow"/>
   </header>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
-import {Component} from 'vue-property-decorator'
-@Component
+import {Component} from 'vue-property-decorator';
+import { Overlay } from 'vant';
+import DetailDatePicker from '@/components/Detail/DetailDatePicker.vue';
+
+Vue.use(Overlay)
+@Component({
+  components: {DetailDatePicker}
+})
 export default class DetailsTabs extends Vue {
-  incomeAmount = '111111111.00'
-  expenseAmount = '111111111.00'
-  created():void{
-    const splitIncome = this.incomeAmount.split(".")
+  incomeAmount = '111111111.00';
+  expenseAmount = '111111111.00';
+  dateShow = false;
+  currentDate = new Date();
+  dateSelected = this.dateFormat(this.currentDate);
+  created(): void {
+    const splitIncome = this.incomeAmount.split('.');
     this.incomeAmount = `${splitIncome[0]}.<span style="font-size:12px;">${splitIncome[1]}</span>`;
-    const splitExpense = this.expenseAmount.split(".")
+    const splitExpense = this.expenseAmount.split('.');
     this.expenseAmount = `${splitExpense[0]}.<span style="font-size:12px;">${splitExpense[1]}</span>`;
+
   }
 
+  datePicker(event:boolean | any) {
+    if (event instanceof Array) {
+      this.dateShow = event[0];
+      this.dateSelected = event[1];
+    }else {
+      this.dateShow = event;
+    }
+  }
+
+  dateFormat(time: string | number | Date) {
+    let nowDate = new Date(time);
+    let year = nowDate.getFullYear();
+    /* 在日期格式中，月份是从0开始的，因此要加0
+     * 使用三元表达式在小于10的前面加0，以达到格式统一  如 09:11:05
+     * */
+    let month = nowDate.getMonth() + 1 < 10 ? '0' + (nowDate.getMonth() + 1) : nowDate.getMonth() + 1;
+    // 拼接
+    return year + '/' + month;
+  }
 }
 </script>
 
 <style lang="scss" scoped>
 @import "~@/assets/style/helper.scss";
-.header{
+
+.header {
   background-color: $color-navBar;
-  >.title{
+  > .title {
     text-align: center;
-    display:block;
+    display: block;
     color: white;
     font-size: 24px;
   }
-  >ul {
+
+  > ul {
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
@@ -91,4 +123,10 @@ export default class DetailsTabs extends Vue {
     }
   }
 }
+::v-deep {
+  .van-overlay {
+    top: 112px;
+  }
+}
+
 </style>

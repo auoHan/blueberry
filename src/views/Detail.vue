@@ -1,7 +1,7 @@
 <template>
   <Layout>
     <template v-slot:header>
-      <DetailsTabs/>
+      <DetailTabs/>
     </template>
 
     <template v-slot:default>
@@ -14,13 +14,15 @@
 import Vue from 'vue';
 import {Component} from 'vue-property-decorator';
 import Layout from '@/components/Layout.vue';
-import DetailsTabs from '@/components/Detail/DetailsTabs.vue';
+import DetailTabs from '@/components/Detail/DetailTabs.vue';
 import AmountDetails from '@/components/Detail/AmountDetails.vue';
+import DetailDatePicker from '@/components/Detail/DetailDatePicker.vue';
+
 @Component({
-  components: {AmountDetails, DetailsTabs, Layout}
+  components: {DetailDatePicker, AmountDetails, DetailTabs, Layout}
 })
 export default class Detail extends Vue {
-
+  currentView = 'DetailTabs';
 }
 </script>
 
