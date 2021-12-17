@@ -64,11 +64,12 @@ export default class Detail extends Vue {
     }
     return totalAmount;
   }
+
   beforeCreate(): void {
     this.$store.commit('fetchRecords');
   }
   mounted(){
-    console.log(this.totalAmount);
+    console.log(1);
   }
 }
 </script>

@@ -2,12 +2,17 @@
   <ol class="total-list">
     <li v-for="(resultObj,key) in result" :key="key">
       <ol class="date-amount">
-        <li class="date" >
-          <span>{{ key }}</span>
-          <span>星期六</span>
+        <li class="date">
+          <span>{{ key.split('/')[1] + '月' + key.split('/')[2] + '日' }}</span>
+          <span>{{
+              weekDay[new Date(
+                parseInt(key.split('/')[0]),
+                parseInt(key.split('/')[1]) - 1,
+                parseInt(key.split('/')[2])).getDay()
+                ]
+            }}</span>
         </li>
         <li class="amount">
-<!--          {{totalAmount[key]}}-->
           <span v-if="totalAmount[key].income!==0.00">收入：{{ totalAmount[key].income }}</span>
           <span v-if="totalAmount[key].expense!==0.00">支出：{{ totalAmount[key].expense }}</span>
         </li>
@@ -37,9 +42,8 @@ import {Component, Prop} from 'vue-property-decorator';
 @Component
 export default class AmountDetails extends Vue {
   @Prop(Object) readonly result!: HashMoney;
-  @Prop(Object) readonly totalAmount!: {[key:string]:{expense:number,income:number}};
-  //totalAmount:{[key:string]:{expense:string,income:string}} = {};
-
+  @Prop(Object) readonly totalAmount!: { [key: string]: { expense: number, income: number } };
+  weekDay = ['星期天', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
 
 }
 </script>
