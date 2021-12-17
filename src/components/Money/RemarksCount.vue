@@ -215,8 +215,8 @@ export default class RemarksCount extends Vue {
   amount() {
     //字符串"1+1"运算可以用到eval函数，得到的值是number类型的数字
     let sum = eval(this.sum);
-    if (sum>999999999){
-      Toast.fail('数值过大，计算失败')
+    if (sum>99999999){
+      Toast.fail('金额不能超过8位数')
       return;
     }
     //如果有小数，保留两位小数或者一位小数
@@ -226,8 +226,8 @@ export default class RemarksCount extends Vue {
 
   //点击完成按钮后传值
   complete() {
-    if (parseFloat(this.sum)>999999999){
-      Toast.fail('数值过大，提交失败')
+    if (parseFloat(this.sum)>99999999){
+      Toast.fail('金额不能超过8位数')
       return;
     }
     const emitComplete = (sum: string) => {

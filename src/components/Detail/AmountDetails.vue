@@ -1,32 +1,26 @@
 <template>
   <ol class="total-list">
-    <li v-for="(resultObj,key) in result" :key="key">
+    <li v-for="(values,key) in result" :key="key">
       <ol class="date-amount">
         <li class="date">
-          <span>{{ key.split('/')[1] + '月' + key.split('/')[2] + '日' }}</span>
-          <span>{{
-              weekDay[new Date(
-                parseInt(key.split('/')[0]),
-                parseInt(key.split('/')[1]) - 1,
-                parseInt(key.split('/')[2])).getDay()
-                ]
-            }}</span>
+          <span>{{ format(key) }}</span>
+          <span>{{ week(key) }}</span>
         </li>
         <li class="amount">
           <span v-if="totalAmount[key].income!==0.00">收入：{{ totalAmount[key].income }}</span>
           <span v-if="totalAmount[key].expense!==0.00">支出：{{ totalAmount[key].expense }}</span>
         </li>
       </ol>
-      <ol class="amount-list">
-        <li v-for="(resultObj,index) in resultObj" :key="index">
+      <ol class="amount-remarks">
+        <li v-for="(valueObj,index) in values" :key="index">
           <div class="icon-background">
-            <Icon :icon-name="resultObj.tag.name" class="icon"/>
+            <Icon :icon-name="valueObj.tag.name" class="icon"/>
           </div>
           <div class="text">
-            <span v-if="resultObj.remarks!==''">{{ resultObj.remarks }}</span>
-            <span v-else>{{ resultObj.tag.name }}</span>
-            <span v-if="resultObj.type==='+'">{{ resultObj.amount }}</span>
-            <span v-else-if="resultObj.type==='-'">-{{ resultObj.amount }}</span>
+            <span v-if="valueObj.remarks!==''" class="remarks">{{ valueObj.remarks }}</span>
+            <span v-else class="remarks">{{ valueObj.tag.name }}</span>
+            <span v-if="valueObj.type==='+'" class="amount">{{ valueObj.amount }}</span>
+            <span v-else-if="valueObj.type==='-'" class="amount">-{{ valueObj.amount }}</span>
           </div>
         </li>
       </ol>
@@ -38,13 +32,20 @@
 <script lang="ts">
 import Vue from 'vue';
 import {Component, Prop} from 'vue-property-decorator';
-
+import dayjs from 'dayjs';
 @Component
 export default class AmountDetails extends Vue {
   @Prop(Object) readonly result!: HashMoney;
   @Prop(Object) readonly totalAmount!: { [key: string]: { expense: number, income: number } };
   weekDay = ['星期天', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
 
+  format(date: string) {
+    return dayjs(date).format('MM月DD日');
+  }
+
+  week(date: string) {
+    return this.weekDay[dayjs(date).day()];
+  }
 }
 </script>
 
@@ -74,7 +75,7 @@ export default class AmountDetails extends Vue {
       }
     }
 
-    > .amount-list {
+    > .amount-remarks {
       > li {
         display: flex;
         align-items: center;
@@ -108,6 +109,14 @@ export default class AmountDetails extends Vue {
           display: flex;
           justify-content: space-between;
           padding-left: 10px;
+
+          > .remarks {
+            overflow: hidden;
+            word-break: keep-all;
+            text-overflow: ellipsis;
+            width: 240px;
+            display: inline-block;
+          }
         }
       }
     }
