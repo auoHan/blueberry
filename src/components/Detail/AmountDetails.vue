@@ -6,9 +6,9 @@
           <span>{{ format(key) }}</span>
           <span>{{ week(key) }}</span>
         </li>
-        <li class="amount">
-          <span v-if="totalAmount[key].income!==0.00">收入：{{ totalAmount[key].income }}</span>
-          <span v-if="totalAmount[key].expense!==0.00">支出：{{ totalAmount[key].expense }}</span>
+        <li class="total-amount">
+          <span v-if="totalAmount[key].income!==0.00" class="income">收入：{{ totalAmount[key].income }}</span>
+          <span v-if="totalAmount[key].expense!==0.00" class="expense">支出：{{ totalAmount[key].expense }}</span>
         </li>
       </ol>
       <ol class="amount-remarks">
@@ -66,11 +66,16 @@ export default class AmountDetails extends Vue {
       color: #969696;
       border-bottom: 2px solid #e1e1e1;
 
-      > .date, .amount {
+      > .date {
         > span {
           &:nth-child(1) {
             padding-right: 12px;
           }
+        }
+      }
+      > .total-amount{
+        >.expense{
+          padding-left: 12px;
         }
       }
     }
