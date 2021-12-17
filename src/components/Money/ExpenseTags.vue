@@ -59,7 +59,7 @@ export default class Tags extends Vue {
     this.expenseClass = id;
     this.expenseShow = true;
     eventBus.$emit('expense-show', this.expenseShow);
-    this.$emit('value', tagName);
+    this.$emit('value', [id, tagName]);
   }
 
   //添加支出标签跳转路由

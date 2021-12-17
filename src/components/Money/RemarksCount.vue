@@ -262,6 +262,7 @@ export default class RemarksCount extends Vue {
       Toast('请输入金额！');
     }
     this.sum = '0';
+    this.$router.push({path:'/detail'})
     console.log('完成');
   }
 }

@@ -32,7 +32,7 @@ export default class Tags extends Vue {
     this.incomeClass = id;
     this.incomeShow = true;
     eventBus.$emit('income-show', this.incomeShow);
-    this.$emit('value', tagName);
+    this.$emit('value', [id, tagName]);
   }
 
   @Watch('type')

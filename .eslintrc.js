@@ -30,6 +30,8 @@ module.exports = {
   ],
   "globals":{
     "RecordItem": true,
-    "Tag":true
+    "Tag":true,
+    "HashMoney":true,
+    "HashMoneyValue":true,
   }
 }

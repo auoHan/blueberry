@@ -40,13 +40,13 @@ Vue.use(SwipeItem);
 })
 export default class Money extends Vue {
   record: RecordItem = {
-    tag: '',
+    tag: {id: '', name: ''},
     type: '-',
     remarksCount: []
   };
   swiperIndex = '0';
 
-  beforeCreate():void{
+  beforeCreate(): void {
     this.$store.commit('fetchRecords');
   }
 
@@ -61,8 +61,9 @@ export default class Money extends Vue {
     this.swiperIndex = index.toString();
   }
 
-  onUpdateTag(value: string) {
-    this.record.tag = value;
+  onUpdateTag(values: string[]) {
+    this.record.tag.id = values[0];
+    this.record.tag.name = values[1];
   }
 
   onUpdateRemarksCount(value: string[]) {
@@ -71,7 +72,7 @@ export default class Money extends Vue {
 
   saveRecord() {
     //深拷贝，重新创建一个新的对象
-    this.$store.commit('createRecord',this.record);
+    this.$store.commit('createRecord', this.record);
   }
 }
 </script>
@@ -88,6 +89,7 @@ export default class Money extends Vue {
   .van-swipe {
     flex: 1;
   }
+
   .van-swipe-item {
     overflow-y: auto;
   }
