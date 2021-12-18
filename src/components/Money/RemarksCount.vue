@@ -58,6 +58,7 @@ import {Component, Prop, Watch} from 'vue-property-decorator';
 import MoneyDatePicker from '@/components/Money/MoneyDatePicker.vue';
 import {eventBus} from '@/main';
 import {Toast} from 'vant';
+import dayjs from 'dayjs';
 
 Vue.use(Toast);
 @Component({
@@ -71,9 +72,7 @@ export default class RemarksCount extends Vue {
   countShow = false;
   note = '';
   keyboards = [1, 2, 3, '今天', 4, 5, 6, '+', 7, 8, 9, '-', 0, '.', ''];
-  currentDate = new Date();
-  dateSelected = this.dateFormat(this.currentDate);
-
+  currentDate = dayjs().format('YYYY/M/D')
   @Watch('type')
   onTypeChange() {
     this.countShow = false;
@@ -90,47 +89,31 @@ export default class RemarksCount extends Vue {
       this.sum = '0';
     });
   }
+
   //销毁事件
-  beforeDestroy():void{
+  beforeDestroy(): void {
     eventBus.$off('expense-show');
     eventBus.$off('income-show');
   }
+
   //鼠标点击或者手指按压按钮，改变当前按钮样式，其他按钮不变
   addActiveClass(index: number) {
     this.activeClass = index;
   }
 
   //子组件传来的方法，子组件点完取消或确定，立马将父组件里的todayShow变为false
-  datePicker(event: any) {
-    if (event instanceof Array) {
-      this.dateShow = event[0];
-      this.dateSelected = event[1];
-      /*
-      * 此处也是，子组件点完确定，立马改变判断时间是否相同，不同则改变numbers数组，
-      * 在按钮中写类似逻辑有BUG，需要第二次点才生效
-      * */
-      if (this.dateSelected !== this.dateFormat(this.currentDate)) {
-        this.keyboards.splice(3, 1, this.dateSelected);
-      } else {
+  datePicker(value: any) {
+    if (value instanceof Array) {
+      this.dateShow = value[0];
+      if (this.currentDate === value[1]) {
         this.keyboards = [1, 2, 3, '今天', 4, 5, 6, '+', 7, 8, 9, '-', 0, '.', ''];
+      } else {
+        this.currentDate = value[1];
+        this.keyboards.splice(3, 1, this.currentDate);
       }
     } else {
-      this.dateShow = event;
+      this.dateShow = value;
     }
-
-  }
-
-  //改变当前时间的格式
-  dateFormat(time: string | number | Date) {
-    let nowDate = new Date(time);
-    let year = nowDate.getFullYear();
-    /* 在日期格式中，月份是从0开始的，因此要加0
-     * 使用三元表达式在小于10的前面加0，以达到格式统一  如 09:11:05
-     * */
-    let month = nowDate.getMonth() + 1 < 10 ? '0' + (nowDate.getMonth() + 1) : nowDate.getMonth() + 1;
-    let day = nowDate.getDate() < 10 ? '0' + nowDate.getDate() : nowDate.getDate();
-    // 拼接
-    return year + '/' + month + '/' + day;
   }
 
   //除了完成按钮之外的按钮逻辑
@@ -188,7 +171,7 @@ export default class RemarksCount extends Vue {
         this.sum = this.sum.substring(0, this.sum.length - 1) + key;
       }
     } else {
-      if (this.sum.length===16){
+      if (this.sum.length === 16) {
         return;
       }
       if ((this.sum === '0' || this.sum === '0.00') && key !== '+' && key !== '-') {
@@ -206,7 +189,7 @@ export default class RemarksCount extends Vue {
       } else if (this.sum.charAt(this.sum.length - 3) === '.') {
         return;
       } else {
-        this.sum+=key;
+        this.sum += key;
       }
     }
   }
@@ -215,8 +198,8 @@ export default class RemarksCount extends Vue {
   amount() {
     //字符串"1+1"运算可以用到eval函数，得到的值是number类型的数字
     let sum = eval(this.sum);
-    if (sum>99999999){
-      Toast.fail('金额不能超过8位数')
+    if (sum > 99999999) {
+      Toast.fail('金额不能超过8位数');
       return;
     }
     //如果有小数，保留两位小数或者一位小数
@@ -226,13 +209,13 @@ export default class RemarksCount extends Vue {
 
   //点击完成按钮后传值
   complete() {
-    if (parseFloat(this.sum)>99999999){
-      Toast.fail('金额不能超过8位数')
+    if (parseFloat(this.sum) > 99999999) {
+      Toast.fail('金额不能超过8位数');
       return;
     }
     const emitComplete = (sum: string) => {
-      this.$emit('value', [sum, this.note, this.dateSelected]);
-      this.$emit('submit', [sum, this.note, this.dateSelected]);
+      this.$emit('value', [sum, this.note, this.currentDate]);
+      this.$emit('submit', [sum, this.note, this.currentDate]);
     };
     if (this.type === '+' && this.sum.charAt(0) === '-') {
       this.sum = this.sum.substring(1, this.sum.length);
@@ -255,10 +238,10 @@ export default class RemarksCount extends Vue {
         const sum = this.sum.substring(0, this.sum.length - 3);
         emitComplete(sum);
       } else {
-        this.$emit('value', [this.sum, this.note, this.dateSelected]);
-        this.$emit('submit', [this.sum, this.note, this.dateSelected]);
+        this.$emit('value', [this.sum, this.note, this.currentDate]);
+        this.$emit('submit', [this.sum, this.note, this.currentDate]);
       }
-      this.$router.push({path:'/detail'})
+      this.$router.push({path: '/detail'});
     } else {
       Toast('请输入金额！');
     }

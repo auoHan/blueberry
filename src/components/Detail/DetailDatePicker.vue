@@ -23,6 +23,7 @@ import Vue from 'vue';
 import {Component} from 'vue-property-decorator'
 import {DatetimePicker, Popup} from 'vant';
 import 'vant/lib/index.css';
+import dayjs from 'dayjs';
 
 Vue.use(DatetimePicker);
 Vue.use(Popup);
@@ -32,7 +33,6 @@ export default class DetailDatePicker extends Vue {
   maxDate= new Date(2025, 11, 31);
   currentDate= new Date();
   dateShow = true;
-  dateString = '';
   //取消按钮
   cancelTime() {
     this.dateShow = false;
@@ -40,12 +40,9 @@ export default class DetailDatePicker extends Vue {
   }
 
   //确定按钮
-  saveTime(val: { getFullYear: () => any; getMonth: () => number; getDate: () => any; }) {
+  saveTime(value:Date) {
     this.dateShow = false;
-    let year = val.getFullYear();
-    let month = val.getMonth() + 1 < 10 ? '0' + (val.getMonth() + 1) : val.getMonth() + 1;
-    this.dateString = `${year}/${month}`;
-    this.$emit('date-picker', [this.dateShow, this.dateString]);
+    this.$emit('date-picker', [this.dateShow, dayjs(value).format('YYYY/M')]);
   }
 
   formatter(type:string, val:string) {
