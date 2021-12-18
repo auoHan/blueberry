@@ -32,7 +32,6 @@ export default class Detail extends Vue {
 
   get resultObj() {
     const {records} = this;
-    if (records.length === 0) {return {};}
     let incomeAmount = 0;
     let expenseAmount = 0;
     let totalAmount: { [key: string]: { expense: number, income: number } } = {};
