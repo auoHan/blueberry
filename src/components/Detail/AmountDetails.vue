@@ -1,6 +1,6 @@
 <template>
   <ol class="total-list">
-    <li v-for="(values,key) in result" :key="key">
+    <li v-for="(values,key) in resultObj" :key="key">
       <ol class="date-amount">
         <li class="date">
           <span>{{ format(key) }}</span>
@@ -35,9 +35,30 @@ import {Component, Prop} from 'vue-property-decorator';
 import dayjs from 'dayjs';
 @Component
 export default class AmountDetails extends Vue {
-  @Prop(Object) readonly result!: HashMoney;
-  @Prop(Object) readonly totalAmount!: { [key: string]: { expense: number, income: number } };
+  @Prop(Object) readonly resultObj!: HashMoney;
+  //@Prop(Object) readonly totalAmount!: { [key: string]: { expense: number, income: number } };
   weekDay = ['星期天', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
+
+  get totalAmount() {
+    let incomeAmount = 0;
+    let expenseAmount = 0;
+    let totalAmount: { [key: string]: { expense: number, income: number } } = {};
+    for (let resultKey in this.resultObj) {
+      totalAmount[resultKey] = totalAmount[resultKey] || {};
+      for (let i = 0; i < this.resultObj[resultKey].length; i++) {
+        if (this.resultObj[resultKey][i].type === '+') {
+          incomeAmount += parseFloat(this.resultObj[resultKey][i].amount);
+        } else if (this.resultObj[resultKey][i].type === '-') {
+          expenseAmount += parseFloat(this.resultObj[resultKey][i].amount);
+        }
+      }
+      totalAmount[resultKey].income = incomeAmount;
+      totalAmount[resultKey].expense = expenseAmount;
+      incomeAmount = 0;
+      expenseAmount = 0;
+    }
+    return totalAmount;
+  }
 
   format(date: string) {
     return dayjs(date).format('MM月DD日');

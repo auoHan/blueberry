@@ -5,7 +5,7 @@
     </template>
 
     <template v-slot:default>
-      <AmountDetails :result="result" :totalAmount="totalAmount"/>
+      <AmountDetails :resultObj="resultObj"/>
     </template>
   </Layout>
 </template>
@@ -28,17 +28,16 @@ export default class Detail extends Vue {
     return this.$store.state.records;
   }
 
-  get result() {
+  get resultObj() {
     const {records} = this;
-    console.log(records);
-    let hashMoney: HashMoney = {};
-    // let hashMoneyList: HashMoney[] = [];
+    if (records.length === 0) {return [];}
+    let hashMoney: {
+      [key: string]: HashMoneyValue[]
+    } = {};
     let sortRecords = clone(records).sort((
       a: { remarksCount: string[]; }, b: { remarksCount: string[]; }) =>
       dayjs(b.remarksCount[2]).valueOf() - dayjs(a.remarksCount[2]).valueOf());
-    console.log(sortRecords);
     for (let i = 0; i < sortRecords.length; i++) {
-      console.log(hashMoney[sortRecords[i].remarksCount[2]]);
       hashMoney[sortRecords[i].remarksCount[2]] = hashMoney[sortRecords[i].remarksCount[2]] || [];
       hashMoney[sortRecords[i].remarksCount[2]].push({
         date: sortRecords[i].remarksCount[2],
@@ -51,35 +50,13 @@ export default class Detail extends Vue {
     return hashMoney;
   }
 
-  get totalAmount() {
-    let incomeAmount = 0;
-    let expenseAmount = 0;
-    let totalAmount: { [key: string]: { expense: number, income: number } } = {};
-
-    for (let resultKey in this.result) {
-      totalAmount[resultKey] = totalAmount[resultKey] || {};
-      for (let i = 0; i < this.result[resultKey].length; i++) {
-        if (this.result[resultKey][i].type === '+') {
-          incomeAmount += parseFloat(this.result[resultKey][i].amount);
-        } else if (this.result[resultKey][i].type === '-') {
-          expenseAmount += parseFloat(this.result[resultKey][i].amount);
-        }
-      }
-      totalAmount[resultKey].income = incomeAmount;
-      totalAmount[resultKey].expense = expenseAmount;
-      incomeAmount = 0;
-      expenseAmount = 0;
-    }
-    return totalAmount;
-  }
-
   beforeCreate(): void {
     this.$store.commit('fetchRecords');
   }
 
-  mounted() {
-    console.log(1);
-  }
+  /*mounted() {
+
+  }*/
 }
 </script>
 

@@ -258,11 +258,11 @@ export default class RemarksCount extends Vue {
         this.$emit('value', [this.sum, this.note, this.dateSelected]);
         this.$emit('submit', [this.sum, this.note, this.dateSelected]);
       }
+      this.$router.push({path:'/detail'})
     } else {
       Toast('请输入金额！');
     }
     this.sum = '0';
-    this.$router.push({path:'/detail'})
     console.log('完成');
   }
 }
