@@ -1,18 +1,22 @@
 <template>
-  <div v-if="Object.keys(resultObj.hashMoney).length===0" class="empty">
+  <div v-if="Object.keys(dailyResult.hashMoney).length===0" class="empty">
     <Icon icon-name="暂无数据" class="empty-icon"/>
     <span>暂无数据</span>
   </div>
   <ol class="total-list" v-else>
-    <li v-for="(values,key) in resultObj.hashMoney" :key="key">
+    <li v-for="(values,key) in dailyResult.hashMoney" :key="key">
       <ol class="date-amount">
         <li class="date">
           <span>{{ format(key) }}</span>
           <span>{{ week(key) }}</span>
         </li>
         <li class="total-amount">
-          <span v-if="resultObj.totalAmount[key].income!==0.00" class="income">收入：{{ resultObj.totalAmount[key].income }}</span>
-          <span v-if="resultObj.totalAmount[key].expense!==0.00" class="expense">支出：{{ resultObj.totalAmount[key].expense }}</span>
+          <span v-if="dailyResult.dailyTotal[key].income!==0.00" class="income">收入：{{
+              dailyResult.dailyTotal[key].income
+            }}</span>
+          <span v-if="dailyResult.dailyTotal[key].expense!==0.00" class="expense">支出：{{
+              dailyResult.dailyTotal[key].expense
+            }}</span>
         </li>
       </ol>
       <ol class="amount-remarks">
@@ -40,8 +44,8 @@ import dayjs from 'dayjs';
 
 @Component
 export default class AmountDetails extends Vue {
-  @Prop(Object) readonly resultObj?: {hashMoney?:HashMoney,totalAmount?: { [key: string]: { expense: number, income: number } }};
-  @Prop(String) readonly nowDate!:string;
+  @Prop(Object) readonly dailyResult?: { hashMoney?: HashMoney, dailyTotal?: TotalAmount};
+  @Prop(String) readonly nowDate!: string;
   weekDay = ['星期天', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
 
   format(date: string) {
@@ -51,6 +55,7 @@ export default class AmountDetails extends Vue {
   week(date: string) {
     return this.weekDay[dayjs(date).day()];
   }
+
   /*mounted(){
     console.log(this.resultObj);
   }*/
@@ -59,23 +64,27 @@ export default class AmountDetails extends Vue {
 
 <style lang="scss" scoped>
 @import "~@/assets/style/helper.scss";
-$empty-color:#999;
-.empty{
+
+$empty-color: #999;
+.empty {
   display: flex;
   width: 100%;
   height: 100%;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  >.empty-icon{
+
+  > .empty-icon {
     width: 100px;
     height: 100px;
     color: $empty-color;
   }
-  >span{
+
+  > span {
     color: $empty-color;
   }
 }
+
 .total-list {
   > li {
     &:nth-last-child(1) {
@@ -97,8 +106,9 @@ $empty-color:#999;
           }
         }
       }
-      > .total-amount{
-        >.expense{
+
+      > .total-amount {
+        > .expense {
           padding-left: 12px;
         }
       }

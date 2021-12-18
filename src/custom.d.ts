@@ -8,14 +8,17 @@ type Tag = {
   name: string
 }
 type HashMoneyValue = {
-  date:string,
+  date: string,
   tag: Tag,
   type: string,
   amount: string,
   remarks: string
 }
 type HashMoney = {
-  [key:string]: HashMoneyValue[]
+  [key: string]: HashMoneyValue[]
+}
+type TotalAmount = {
+  [key: string]: { expense: number, income: number }
 }
 
 interface Window {

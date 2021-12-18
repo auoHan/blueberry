@@ -33,5 +33,6 @@ module.exports = {
     "Tag":true,
     "HashMoney":true,
     "HashMoneyValue":true,
+    "TotalAmount":true,
   }
 }

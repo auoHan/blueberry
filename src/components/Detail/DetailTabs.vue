@@ -12,11 +12,17 @@
       </li>
       <li class="income">
         <span>收入</span>
-        <span v-html="this.incomeAmount">{{ incomeAmount }}</span>
+        <span>
+          <span>{{ this.monthlyResult[this.nowDate].income.toFixed(2).split('.')[0] }}</span>
+          <span style="font-size: 12px">.{{ this.monthlyResult[this.nowDate].income.toFixed(2).split('.')[1] }}</span>
+        </span>
       </li>
       <li class="expense">
         <span>支出</span>
-        <span v-html="this.expenseAmount">{{ expenseAmount }}</span>
+        <span>
+          <span>{{ this.monthlyResult[this.nowDate].expense.toFixed(2).split('.')[0] }}</span>
+          <span style="font-size: 12px">.{{ this.monthlyResult[this.nowDate].expense.toFixed(2).split('.')[1] }}</span>
+        </span>
       </li>
     </ul>
     <DetailDatePicker @date-picker="datePicker" v-if="dateShow"/>
@@ -36,18 +42,10 @@ Vue.use(Overlay);
 })
 export default class DetailsTabs extends Vue {
   @Prop(String) readonly nowDate!: string;
-  incomeAmount = '111111111.00';
-  expenseAmount = '111111111.00';
+  @Prop(Object) readonly monthlyResult!: TotalAmount;
   dateShow = false;
   year = dayjs(this.nowDate).year();
   month = dayjs(this.nowDate).month() + 1;
-
-  created(): void {
-    const splitIncome = this.incomeAmount.split('.');
-    this.incomeAmount = `${splitIncome[0]}.<span style="font-size:12px;">${splitIncome[1]}</span>`;
-    const splitExpense = this.expenseAmount.split('.');
-    this.expenseAmount = `${splitExpense[0]}.<span style="font-size:12px;">${splitExpense[1]}</span>`;
-  }
 
   datePicker(event: boolean | any) {
     if (event instanceof Array) {

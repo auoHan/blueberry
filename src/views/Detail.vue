@@ -1,11 +1,11 @@
 <template>
   <Layout>
     <template v-slot:header>
-      <DetailTabs :now-date.sync="nowDate"/>
+      <DetailTabs :now-date.sync="nowDate" :monthly-result="monthlyResult"/>
     </template>
 
     <template v-slot:default>
-      <AmountDetails :resultObj="resultObj" :now-date="nowDate"/>
+      <AmountDetails :daily-result="dailyResult" :now-date="nowDate"/>
     </template>
   </Layout>
 </template>
@@ -30,11 +30,11 @@ export default class Detail extends Vue {
     return this.$store.state.records;
   }
 
-  get resultObj() {
+  get dailyResult() {
     const {records} = this;
     let incomeAmount = 0;
     let expenseAmount = 0;
-    let totalAmount: { [key: string]: { expense: number, income: number } } = {};
+    let dailyTotal: TotalAmount = {};
     let hashMoney: {
       [key: string]: HashMoneyValue[]
     } = {};
@@ -42,7 +42,7 @@ export default class Detail extends Vue {
       a: { remarksCount: string[]; }, b: { remarksCount: string[]; }) =>
       dayjs(b.remarksCount[2]).valueOf() - dayjs(a.remarksCount[2]).valueOf());
     for (let i = 0; i < sortRecords.length; i++) {
-      if (this.nowDate===dayjs(sortRecords[i].remarksCount[2]).format('YYYY/M')){
+      if (this.nowDate === dayjs(sortRecords[i].remarksCount[2]).format('YYYY/M')) {
         hashMoney[sortRecords[i].remarksCount[2]] = hashMoney[sortRecords[i].remarksCount[2]] || [];
         hashMoney[sortRecords[i].remarksCount[2]].push({
           date: sortRecords[i].remarksCount[2],
@@ -54,8 +54,9 @@ export default class Detail extends Vue {
       }
     }
 
+    //计算每天的收入支出
     for (let hashMoneyKey in hashMoney) {
-      totalAmount[hashMoneyKey] = totalAmount[hashMoneyKey] || {};
+      dailyTotal[hashMoneyKey] = dailyTotal[hashMoneyKey] || {};
       for (let i = 0; i < hashMoney[hashMoneyKey].length; i++) {
         if (hashMoney[hashMoneyKey][i].type === '+') {
           incomeAmount += parseFloat(hashMoney[hashMoneyKey][i].amount);
@@ -63,13 +64,30 @@ export default class Detail extends Vue {
           expenseAmount += parseFloat(hashMoney[hashMoneyKey][i].amount);
         }
       }
-      totalAmount[hashMoneyKey].income = incomeAmount;
-      totalAmount[hashMoneyKey].expense = expenseAmount;
+      dailyTotal[hashMoneyKey].income = Math.round(incomeAmount*100)/100;
+      dailyTotal[hashMoneyKey].expense = Math.round(expenseAmount*100)/100;
       incomeAmount = 0;
       expenseAmount = 0;
     }
-    console.log(hashMoney, totalAmount);
-    return {hashMoney, totalAmount};
+    return {hashMoney, dailyTotal};
+  }
+
+  get monthlyResult() {
+    let incomeAmount = 0;
+    let expenseAmount = 0;
+    let monthlyTotal: TotalAmount = {};
+    monthlyTotal[this.nowDate] = monthlyTotal[this.nowDate] || {};
+    if (Object.keys(this.dailyResult.dailyTotal).length === 0) {
+      monthlyTotal[this.nowDate] = {expense: 0, income: 0}
+    } else {
+      for (let dailyTotalKey in this.dailyResult.dailyTotal) {
+        expenseAmount += this.dailyResult.dailyTotal[dailyTotalKey].expense;
+        incomeAmount += this.dailyResult.dailyTotal[dailyTotalKey].income;
+        monthlyTotal[dayjs(dailyTotalKey).format('YYYY/M')].expense = Math.round(expenseAmount*100)/100;
+        monthlyTotal[dayjs(dailyTotalKey).format('YYYY/M')].income = Math.round(incomeAmount*100)/100;
+      }
+    }
+    return monthlyTotal;
   }
 
   beforeCreate(): void {
