@@ -187,7 +187,11 @@ export default class RemarksCount extends Vue {
       if (this.sum.charAt(this.sum.length - 2) === '.') {
         this.sum += key;
       } else if (this.sum.charAt(this.sum.length - 3) === '.') {
-        return;
+        if (this.sum.charAt(this.sum.length - 1) === '+'||this.sum.charAt(this.sum.length - 1) === '-'){
+          this.sum += key;
+        }else {
+          return;
+        }
       } else {
         this.sum += key;
       }
@@ -204,7 +208,6 @@ export default class RemarksCount extends Vue {
     }
     //如果有小数，保留两位小数或者一位小数
     this.sum = (Math.round(sum * 100) / 100).toString();
-
   }
 
   //点击完成按钮后传值
