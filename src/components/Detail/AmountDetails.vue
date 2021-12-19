@@ -29,7 +29,7 @@
               :title="valueObj.remarks || valueObj.tag.name"
               :value="valueObj.type==='+'? valueObj.amount : -valueObj.amount"/>
             <template #right>
-              <van-button square text="删除" type="danger" class="delete-button"/>
+              <van-button square text="删除" type="danger" class="delete-button" @click="removeRecord(valueObj.tag.id)"/>
             </template>
           </van-swipe-cell>
         </li>
@@ -43,16 +43,22 @@
 import Vue from 'vue';
 import {Component, Prop} from 'vue-property-decorator';
 import dayjs from 'dayjs';
-import {SwipeCell, Button, Cell} from 'vant';
+import {SwipeCell, Button, Cell, Dialog} from 'vant';
 
 Vue.use(SwipeCell);
 Vue.use(Button);
 Vue.use(Cell);
+Vue.use(Dialog);
 @Component
 export default class AmountDetails extends Vue {
   @Prop(Object) readonly dailyResult?: { hashMoney?: HashMoney, dailyTotal?: TotalAmount };
   @Prop(String) readonly nowDate!: string;
   weekDay = ['星期天', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
+
+  removeRecord(id: string) {
+    console.log(id);
+    this.$store.commit('removeRecord', id);
+  }
 
   format(date: string) {
     return dayjs(date).format('M月D日');
@@ -152,7 +158,7 @@ $empty-color: #999;
     justify-content: space-between;
   }
 
-  .van-cell__title{
+  .van-cell__title {
     overflow: hidden;
     word-break: keep-all;
     text-overflow: ellipsis;
@@ -160,6 +166,6 @@ $empty-color: #999;
     -webkit-box-flex: 0;
     -webkit-flex: none;
     flex: none;
-}
+  }
 }
 </style>
