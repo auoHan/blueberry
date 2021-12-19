@@ -123,7 +123,7 @@ export default class RemarksCount extends Vue {
     } else if (key === '.') {
       if (this.sum === '0') {
         this.sum = '0.';
-      } else if (this.sum.length === 16) {
+      } else if (this.sum.length === 17) {
         return;
       } else {
         if (this.sum.charAt(this.sum.length - 1) !== '+'
@@ -144,7 +144,7 @@ export default class RemarksCount extends Vue {
         this.sum = this.sum.substring(0, this.sum.length - 1);
       }
     } else if (key === '+') {
-      if (this.sum.length === 16) {
+      if (this.sum.length === 17) {
         return;
       }
       if (this.sum.charAt(this.sum.length - 1) !== '+'
@@ -157,7 +157,7 @@ export default class RemarksCount extends Vue {
         this.sum = this.sum.replace(/[-]$/, '+');
       }
     } else if (key === '-') {
-      if (this.sum.length === 16) {
+      if (this.sum.length === 17) {
         return;
       }
       if (this.sum.charAt(this.sum.length - 1) !== '+'
@@ -171,7 +171,7 @@ export default class RemarksCount extends Vue {
         this.sum = this.sum.substring(0, this.sum.length - 1) + key;
       }
     } else {
-      if (this.sum.length === 16) {
+      if (this.sum.length === 17) {
         return;
       }
       if ((this.sum === '0' || this.sum === '0.00') && key !== '+' && key !== '-') {
@@ -274,12 +274,12 @@ export default class RemarksCount extends Vue {
     border-bottom: 1px solid #ccc;
     border-top: 1px solid #ccc;
     padding: 10px 8px;
-
+    display: flex;
     > .notes {
       display: flex;
       flex-direction: row;
       align-items: center;
-
+      flex: 1;
 
       > span {
 
@@ -293,16 +293,15 @@ export default class RemarksCount extends Vue {
       > input {
         margin-left: 4px;
         height: 32px;
-        flex-grow: 1;
-        padding-right: 100px;
+        width: 120px;
       }
     }
 
     > .sum {
-      position: absolute;
-      top: 10px;
-      right: 10px;
+      text-align: right;
+      vertical-align: middle;
       font-size: 20px;
+      flex: 1;
     }
 
   }
