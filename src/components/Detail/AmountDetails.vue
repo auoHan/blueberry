@@ -21,15 +21,17 @@
       </ol>
       <ol class="amount-remarks">
         <li v-for="(valueObj,index) in values" :key="index">
-          <div class="icon-background">
-            <Icon :icon-name="valueObj.tag.name" class="icon"/>
-          </div>
-          <div class="text">
-            <span v-if="valueObj.remarks!==''" class="remarks">{{ valueObj.remarks }}</span>
-            <span v-else class="remarks">{{ valueObj.tag.name }}</span>
-            <span v-if="valueObj.type==='+'" class="amount">{{ valueObj.amount }}</span>
-            <span v-else-if="valueObj.type==='-'" class="amount">-{{ valueObj.amount }}</span>
-          </div>
+          <van-swipe-cell class="swipe-li">
+            <div class="icon-background">
+              <Icon :icon-name="valueObj.tag.name" class="icon"/>
+            </div>
+            <van-cell
+              :title="valueObj.remarks || valueObj.tag.name"
+              :value="valueObj.type==='+'? valueObj.amount : -valueObj.amount"/>
+            <template #right>
+              <van-button square text="删除" type="danger" class="delete-button"/>
+            </template>
+          </van-swipe-cell>
         </li>
       </ol>
     </li>
@@ -41,10 +43,14 @@
 import Vue from 'vue';
 import {Component, Prop} from 'vue-property-decorator';
 import dayjs from 'dayjs';
+import {SwipeCell, Button, Cell} from 'vant';
 
+Vue.use(SwipeCell);
+Vue.use(Button);
+Vue.use(Cell);
 @Component
 export default class AmountDetails extends Vue {
-  @Prop(Object) readonly dailyResult?: { hashMoney?: HashMoney, dailyTotal?: TotalAmount};
+  @Prop(Object) readonly dailyResult?: { hashMoney?: HashMoney, dailyTotal?: TotalAmount };
   @Prop(String) readonly nowDate!: string;
   weekDay = ['星期天', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
 
@@ -113,52 +119,47 @@ $empty-color: #999;
         }
       }
     }
-
-    > .amount-remarks {
-      > li {
-        display: flex;
-        align-items: center;
-        padding: 5px 16px;
-        border-bottom: 1px solid #e9e9e9;
-
-        &:nth-last-child(1) {
-          border-bottom: none;
-        }
-
-        > .icon-background {
-          background-color: $color-notSelected;
-          width: 40px;
-          height: 40px;
-          border-radius: 50%;
-          position: relative;
-
-          > .icon {
-            position: absolute;
-            width: 28px;
-            height: 28px;
-            left: 50%;
-            top: 50%;
-            margin: -14px 0 0 -14px;
-          }
-        }
-
-        > .text {
-          //子元素占1个，display:flex才有效果
-          flex-grow: 1;
-          display: flex;
-          justify-content: space-between;
-          padding-left: 10px;
-
-          > .remarks {
-            overflow: hidden;
-            word-break: keep-all;
-            text-overflow: ellipsis;
-            width: 240px;
-            display: inline-block;
-          }
-        }
-      }
-    }
   }
+}
+
+.icon-background {
+  background-color: $color-notSelected;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  position: relative;
+  padding: 20px 20px;
+
+  > .icon {
+    position: absolute;
+    width: 28px;
+    height: 28px;
+    left: 50%;
+    top: 50%;
+    margin: -14px 0 0 -14px;
+  }
+}
+
+::v-deep {
+  .van-swipe-cell__wrapper {
+    display: flex;
+    padding: 6px 0 0 16px;
+
+  }
+
+  .van-cell {
+    flex-grow: 1;
+    justify-content: space-between;
+  }
+
+  .van-cell__title{
+    overflow: hidden;
+    word-break: keep-all;
+    text-overflow: ellipsis;
+    width: 240px;
+    -webkit-box-flex: 0;
+    -webkit-flex: none;
+    flex: none;
+}
 }
 </style>
