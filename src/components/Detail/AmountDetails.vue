@@ -27,7 +27,8 @@
             </div>
             <van-cell
               :title="valueObj.remarks || valueObj.tag.name"
-              :value="valueObj.type==='+'? valueObj.amount : -valueObj.amount"/>
+              :value="valueObj.type==='+'? valueObj.amount : -valueObj.amount"
+              class="cell-li"/>
             <template #right>
               <van-button square text="删除" type="danger" class="delete-button" @click="removeRecord(valueObj.tag.id)"/>
             </template>
@@ -62,7 +63,7 @@ export default class AmountDetails extends Vue {
     })
       .then(() => {
         this.$store.commit('removeRecord', id);
-      })
+      });
   }
 
   format(date: string) {
@@ -127,6 +128,25 @@ $empty-color: #999;
       > .total-amount {
         > .expense {
           padding-left: 12px;
+        }
+      }
+    }
+
+    > .amount-remarks {
+      > li {
+        &:nth-last-child(1) {
+          > .swipe-li {
+            ::v-deep {
+              .van-swipe-cell__wrapper {
+                > .van-cell {
+                  &::after {
+                    border-bottom: none;
+                  }
+                }
+              }
+
+            }
+          }
         }
       }
     }
