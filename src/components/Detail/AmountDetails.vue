@@ -57,7 +57,12 @@ export default class AmountDetails extends Vue {
 
   removeRecord(id: string) {
     console.log(id);
-    this.$store.commit('removeRecord', id);
+    Dialog.confirm({
+      message: '确定删除吗？',
+    })
+      .then(() => {
+        this.$store.commit('removeRecord', id);
+      })
   }
 
   format(date: string) {
