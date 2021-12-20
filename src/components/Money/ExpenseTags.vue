@@ -64,7 +64,7 @@ export default class Tags extends Vue {
 
   //添加支出标签跳转路由
   addExpenseTags() {
-    this.$router.push({path: '/expense'});
+    this.$router.push({path: '/money/expense'});
   }
 
   @Watch('type')

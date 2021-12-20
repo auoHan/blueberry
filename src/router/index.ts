@@ -3,8 +3,8 @@ import VueRouter, {RouteConfig} from 'vue-router';
 import Money from '@/views/Money.vue';
 import Detail from '@/views/Detail.vue';
 import Statistics from '@/views/Statistics.vue';
-import NotFound from '@/views/NotFound.vue';
-import ExpenseTags from '@/views/AddExpenseTags.vue';
+import NotFound from '@/pages/NotFound.vue';
+import ExpenseTags from '@/pages/AddExpenseTags.vue';
 
 Vue.use(VueRouter);
 
@@ -27,7 +27,7 @@ const routes: Array<RouteConfig> = [
 
   },
   {
-    path: '/expense',
+    path: '/money/expense',
     component: ExpenseTags,
   },
   {
