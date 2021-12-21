@@ -110,9 +110,6 @@ export default class DetailsTabs extends Vue {
 
       &.income {
         padding-left: 32px;
-        /*width: 38vw;
-        max-width: 45vw;
-        min-width: 30vw;*/
         flex: 1;
       }
       &.expense{
