@@ -72,7 +72,8 @@ export default class RemarksCount extends Vue {
   countShow = false;
   note = '';
   keyboards = [1, 2, 3, '今天', 4, 5, 6, '+', 7, 8, 9, '-', 0, '.', ''];
-  currentDate = dayjs().format('YYYY/M/D')
+  currentDate = dayjs().format('YYYY/M/D');
+
   @Watch('type')
   onTypeChange() {
     this.countShow = false;
@@ -123,7 +124,7 @@ export default class RemarksCount extends Vue {
     } else if (key === '.') {
       if (this.sum === '0') {
         this.sum = '0.';
-      } else if (this.sum.length === 17) {
+      } else if (this.sum.length === 23) {
         return;
       } else {
         if (this.sum.charAt(this.sum.length - 1) !== '+'
@@ -144,7 +145,7 @@ export default class RemarksCount extends Vue {
         this.sum = this.sum.substring(0, this.sum.length - 1);
       }
     } else if (key === '+') {
-      if (this.sum.length === 17) {
+      if (this.sum.length === 18) {
         return;
       }
       if (this.sum.charAt(this.sum.length - 1) !== '+'
@@ -157,7 +158,7 @@ export default class RemarksCount extends Vue {
         this.sum = this.sum.replace(/[-]$/, '+');
       }
     } else if (key === '-') {
-      if (this.sum.length === 17) {
+      if (this.sum.length === 18) {
         return;
       }
       if (this.sum.charAt(this.sum.length - 1) !== '+'
@@ -171,9 +172,6 @@ export default class RemarksCount extends Vue {
         this.sum = this.sum.substring(0, this.sum.length - 1) + key;
       }
     } else {
-      if (this.sum.length === 17) {
-        return;
-      }
       if ((this.sum === '0' || this.sum === '0.00') && key !== '+' && key !== '-') {
         this.sum = '';
       }
@@ -183,13 +181,64 @@ export default class RemarksCount extends Vue {
       ) {
         this.sum = this.sum.substring(0, this.sum.length - 1);
       }
-      //小数点后面如果是一位则还可以点击数字，如果是两位，则return，如果都不是则点击任何数字有效，保证小数点后面不超过两位
-      if (this.sum.charAt(this.sum.length - 2) === '.') {
+      //输入数字限制最大长度，超过就不可点击数字键盘
+      if (this.sum.length === 7) {
+        if (this.sum.indexOf('.') > 0) {
+          if (this.sum.charAt(this.sum.length - 1) === '.') {
+            this.sum += key;
+          } else if (this.sum.charAt(this.sum.length - 2) === '.') {
+            this.sum += key;
+          } else if (this.sum.charAt(this.sum.length - 3) === '.') {
+            if (this.sum.charAt(this.sum.length - 1) === '+' || this.sum.charAt(this.sum.length - 1) === '-') {
+              this.sum += key;
+            } else {
+              return;
+            }
+          }else if (this.sum.indexOf('+') > 0 || this.sum.indexOf('-') > 0){
+            this.sum += key;
+          }
+        } else if (this.sum.indexOf('+') > 0 || this.sum.indexOf('-') > 0) {
+          this.sum += key;
+        }
+         return;
+        } else if (this.sum.length > 7 && (this.sum.indexOf('+') > 0 || this.sum.indexOf('-') > 0)) {
+          let lastSum = this.sum.indexOf('+') > 0 ? this.sum.split('+')[1] : this.sum.split('-')[1];
+          console.log(lastSum);
+          if (lastSum.length < 7 || (lastSum.length >= 7 && lastSum.indexOf('.') > 0)) {
+            if (this.sum.charAt(this.sum.length - 1) === '.') {
+              this.sum += key;
+            } else if (this.sum.charAt(this.sum.length - 2) === '.') {
+              this.sum += key;
+            } else if (this.sum.charAt(this.sum.length - 3) === '.') {
+              if (this.sum.charAt(this.sum.length - 1) === '+'||this.sum.charAt(this.sum.length - 1) === '-'){
+                this.sum += key;
+              }else {
+                return;
+              }
+            } else {
+              this.sum += key;
+            }
+          }/*else if (this.sum.indexOf('+')>0 ? this.sum.split('+')[1].length>8 : this.sum.split('-')[1].length>8){
+          if (this.sum.charAt(this.sum.length - 1) === '.'){
+            this.sum += key;
+          }else if (this.sum.charAt(this.sum.length - 2) === '.'){
+            this.sum += key;
+          }else if (this.sum.charAt(this.sum.length - 3) === '.'){
+            if (this.sum.charAt(this.sum.length - 1) === '+'||this.sum.charAt(this.sum.length - 1) === '-'){
+              this.sum += key;
+            }else {
+              return;
+            }
+          }
+        }else {
+          return;
+        }*/
+      } else if (this.sum.charAt(this.sum.length - 2) === '.') {//小数点后面如果是一位则还可以点击数字，如果是两位，则return，如果都不是则点击任何数字有效，保证小数点后面不超过两位
         this.sum += key;
       } else if (this.sum.charAt(this.sum.length - 3) === '.') {
-        if (this.sum.charAt(this.sum.length - 1) === '+'||this.sum.charAt(this.sum.length - 1) === '-'){
+        if (this.sum.charAt(this.sum.length - 1) === '+' || this.sum.charAt(this.sum.length - 1) === '-') {
           this.sum += key;
-        }else {
+        } else {
           return;
         }
       } else {
@@ -203,9 +252,10 @@ export default class RemarksCount extends Vue {
     //字符串"1+1"运算可以用到eval函数，得到的值是number类型的数字
     let sum = eval(this.sum);
     if (sum > 99999999) {
-      Toast.fail('金额不能超过8位数');
+      Toast.fail('最大金额为99999999');
       return;
     }
+
     //如果有小数，保留两位小数或者一位小数
     this.sum = (Math.round(sum * 100) / 100).toString();
   }
@@ -275,6 +325,7 @@ export default class RemarksCount extends Vue {
     border-top: 1px solid #ccc;
     padding: 10px 8px;
     display: flex;
+
     > .notes {
       display: flex;
       flex-direction: row;
@@ -291,9 +342,9 @@ export default class RemarksCount extends Vue {
       }
 
       > input {
-        margin-left: 4px;
+        margin-left: 2px;
         height: 32px;
-        width: 120px;
+        width: 90px;
       }
     }
 
