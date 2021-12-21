@@ -325,13 +325,13 @@ export default class RemarksCount extends Vue {
     border-top: 1px solid #ccc;
     padding: 10px 8px;
     display: flex;
-
+    flex-direction: column;
     > .notes {
       display: flex;
       flex-direction: row;
       align-items: center;
       flex: 1;
-
+      border-bottom: 1px solid #e1e1e1;
       > span {
 
         > .note-icon {
@@ -344,7 +344,8 @@ export default class RemarksCount extends Vue {
       > input {
         margin-left: 2px;
         height: 32px;
-        width: 90px;
+        flex: 1;
+        padding: 0 5px;
       }
     }
 

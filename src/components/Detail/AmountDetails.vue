@@ -112,22 +112,22 @@ $empty-color: #999;
     > .date-amount {
       display: flex;
       justify-content: space-between;
-      padding: 5px 16px;
-      font-size: 14px;
+      padding: 5px 8px;
+      font-size: 12px;
       color: #969696;
       border-bottom: 2px solid #e1e1e1;
 
       > .date {
         > span {
           &:nth-child(1) {
-            padding-right: 12px;
+            padding-right: 6px;
           }
         }
       }
 
       > .total-amount {
         > .expense {
-          padding-left: 12px;
+          padding-left: 6px;
         }
       }
     }
@@ -187,7 +187,7 @@ $empty-color: #999;
     overflow: hidden;
     word-break: keep-all;
     text-overflow: ellipsis;
-    width: 240px;
+    width: 144px;
     -webkit-box-flex: 0;
     -webkit-flex: none;
     flex: none;

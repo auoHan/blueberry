@@ -77,14 +77,12 @@ export default class DetailsTabs extends Vue {
   > ul {
     display: flex;
     flex-direction: row;
-    justify-content: flex-start;
+    justify-content: space-between;
     padding: 10px 20px;
 
     > li {
       > span {
         display: block;
-        font-size: 20px;
-        font-weight: 300;
 
         &:nth-child(1) {
           font-size: 14px;
@@ -98,20 +96,27 @@ export default class DetailsTabs extends Vue {
         > span {
           &:nth-child(2) {
             border-right: 1px solid #333233;
-            padding-right: 12px;
+            padding-right: 3px;
 
             > .triangles {
               display: inline-block;
               vertical-align: middle;
-              padding-left: 4px;
+              width: 12px;
+              height: 12px;
             }
           }
         }
       }
 
       &.income {
-        padding: 0 48px 0 32px;
-        width: 45vw;
+        padding-left: 32px;
+        /*width: 38vw;
+        max-width: 45vw;
+        min-width: 30vw;*/
+        flex: 1;
+      }
+      &.expense{
+        flex: 1;
       }
     }
   }
@@ -119,7 +124,7 @@ export default class DetailsTabs extends Vue {
 
 ::v-deep {
   .van-overlay {
-    top: 112px;
+    top: 106px;
   }
 }
 
