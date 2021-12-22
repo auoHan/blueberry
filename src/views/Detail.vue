@@ -39,8 +39,8 @@ export default class Detail extends Vue {
       [key: string]: HashMoneyValue[]
     } = {};
     let sortRecords = clone(records).sort((
-      a: { remarksCount: string[]; }, b: { remarksCount: string[]; }) =>
-      dayjs(b.remarksCount[2]).valueOf() - dayjs(a.remarksCount[2]).valueOf());
+      first: { remarksCount: string[]; }, second: { remarksCount: string[]; }) =>
+      dayjs(second.remarksCount[2]).valueOf() - dayjs(first.remarksCount[2]).valueOf());
     for (let i = 0; i < sortRecords.length; i++) {
       if (this.nowDate === dayjs(sortRecords[i].remarksCount[2]).format('YYYY/M')) {
         hashMoney[sortRecords[i].remarksCount[2]] = hashMoney[sortRecords[i].remarksCount[2]] || [];
