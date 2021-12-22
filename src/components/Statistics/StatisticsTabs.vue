@@ -1,7 +1,7 @@
 <template>
   <header class="header">
     <van-dropdown-menu>
-      <van-dropdown-item v-model="type" :options="typeOption"/>
+      <van-dropdown-item v-model="type" :options="typeOption" @change="onChangeType"/>
     </van-dropdown-menu>
     <ul class="ul-time">
       <li v-for="item in intervalOption" :key="item.value" :class="{selected:item.value===interval}"
@@ -14,27 +14,44 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import {Component} from 'vue-property-decorator';
+import {Component, Watch} from 'vue-property-decorator';
 import {DropdownMenu, DropdownItem} from 'vant';
 
 Vue.use(DropdownMenu);
 Vue.use(DropdownItem);
 @Component
 export default class StatisticsTabs extends Vue {
-  type = '-';
+  tabObj = JSON.parse(window.localStorage.getItem('statistics-tabs') || '{"type":"expense","interval":"week"}')
+  type = this.tabObj.type;
   typeOption = [
-    {text: '支出', value: '-'},
-    {text: '收入', value: '+'},
+    {text: '支出', value: 'expense'},
+    {text: '收入', value: 'income'},
   ];
-  interval = 'week';
+  interval = this.tabObj.interval;
   intervalOption = [
     {text: '周', value: 'week'},
     {text: '月', value: 'month'},
     {text: '年', value: 'year'},
   ];
 
+  @Watch('type')
+  @Watch('interval')
+  onTypeAndIntervalChanged() {
+    this.$router.push({path: `/statistics/${this.type}/${this.interval}`});
+  }
+
   selectedInterval(value: string) {
     this.interval = value;
+    window.localStorage.setItem('statistics-tabs', JSON.stringify({type:this.type,interval:value}));
+    this.$router.push({name: `${this.type}`, params: {date: `${this.interval}`}});
+    //this.$router.push({path: `/statistics/${this.type}/${this.interval}`});
+  }
+
+  onChangeType(value: string) {
+    this.type = value;
+    window.localStorage.setItem('statistics-tabs', JSON.stringify({type:value,interval:this.interval}));
+    this.$router.push({name: `${this.type}`, params: {date: `${this.interval}`}});
+    //this.$router.push({path: `/statistics/${this.type}/${this.interval}`});
   }
 }
 </script>
@@ -43,7 +60,8 @@ export default class StatisticsTabs extends Vue {
 @import "~@/assets/style/helper.scss";
 
 .header {
-    height: 102px;
+  height: 102px;
+
   > .ul-time {
     position: absolute;
     left: 0;
@@ -79,14 +97,17 @@ export default class StatisticsTabs extends Vue {
     }
   }
 }
+
 ::v-deep {
-  .van-dropdown-menu{
+  .van-dropdown-menu {
     padding-bottom: 50px;
   }
+
   .van-dropdown-menu__bar {
     box-shadow: none;
     background-color: $color-navBar;
   }
+
   .van-dropdown-menu__title {
 
     padding: 12px 30px;
@@ -99,16 +120,20 @@ export default class StatisticsTabs extends Vue {
       border-color: transparent transparent #333 #333;
     }
   }
+
   .van-popup--top {
     top: 53px;
   }
-  .van-dropdown-item__option--active{
+
+  .van-dropdown-item__option--active {
     color: $color-navBar;
   }
-  .van-dropdown-item__option--active .van-dropdown-item__icon{
+
+  .van-dropdown-item__option--active .van-dropdown-item__icon {
     color: $color-navBar;
   }
-  .van-dropdown-menu__title--active{
+
+  .van-dropdown-menu__title--active {
     color: white;
   }
 }
