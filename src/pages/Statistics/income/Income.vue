@@ -1,40 +1,56 @@
 <template>
-<div>
-  <van-tabs>
-    <van-tab v-for="index in nowWeek" :title="'标签 ' + index" :key="index">
-      内容 {{ index }}
-    </van-tab>
-  </van-tabs>
-  收入{{$route.params.date}}
-</div>
+  <div>
+    <van-tabs v-if="thisYear">
+      <van-tab v-for="(week,index) in x" :title="week" :key="index">
+        weekIndex:{{ index }}
+        week:{{ week }}
+      </van-tab>
+    </van-tabs>
+    收入{{ $route.params.date }}
+  </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
-import {Component} from 'vue-property-decorator'
-import { Tab, Tabs } from 'vant';
+import {Component} from 'vue-property-decorator';
+import {Tab, Tabs} from 'vant';
 import dayjs from 'dayjs';
-import isWeek from 'dayjs/plugin/isoWeek'
-import isoWeeksInYear from 'dayjs/plugin/isoWeeksInYear'
-import isLeapYear from 'dayjs/plugin/isLeapYear'
+import isWeek from 'dayjs/plugin/isoWeek';
+import isoWeeksInYear from 'dayjs/plugin/isoWeeksInYear';
+import isLeapYear from 'dayjs/plugin/isLeapYear';
 
 
 Vue.use(Tab);
 Vue.use(Tabs);
-dayjs.extend(isWeek)
-dayjs.extend(isoWeeksInYear)
-dayjs.extend(isLeapYear)
-@Component
+dayjs.extend(isWeek);
+dayjs.extend(isoWeeksInYear);
+dayjs.extend(isLeapYear);
+@Component({
+  computed: {
+    x() {
+      //console.log(this.$data.allWeek);
+      let a = [];
+      for (let i = 1; i <= this.$data.lastYearWeek; i++) {
+        //console.log(this.$data.lastYear+`年-第${i}周`);
+        a.push(this.$data.lastYear + `年-第${i}周`);
+      }
+      for (let i = 1; i <= this.$data.thisYearWeek; i++) {
+        console.log(this.$data.thisYear + `年-第${i}周`);
+        a.push(this.$data.thisYear + `年-第${i}周`);
+      }
+      console.log(a);
+      return a;
+    }
+  }
+})
 export default class Income extends Vue {
-  // beforeWeek = (dayjs().year()-1).isoWeeksInYear()
-  nowWeek = dayjs().isoWeek();
-  allWeek = [this.nowWeek]
-  mounted(){
-    const x = (dayjs().year())-1
-    console.log(dayjs(2021).isoWeeksInYear());
-    console.log(dayjs(2020).isoWeeksInYear());
-    console.log(dayjs().isoWeek());
-    console.log((dayjs(x).year())-1);
+  lastYear = dayjs((dayjs().year() - 1).toString()).year();
+  lastYearWeek = dayjs((dayjs().year() - 1).toString()).isoWeeksInYear();
+  thisYear = dayjs().year();
+  thisYearWeek = dayjs().isoWeek();
+
+  mounted() {
+    console.log(dayjs().subtract(1, 'year'));
   }
 }
 </script>

@@ -34,12 +34,6 @@ export default class StatisticsTabs extends Vue {
     {text: '年', value: 'year'},
   ];
 
-  @Watch('type')
-  @Watch('interval')
-  onTypeAndIntervalChanged() {
-    this.$router.push({path: `/statistics/${this.type}/${this.interval}`});
-  }
-
   selectedInterval(value: string) {
     this.interval = value;
     window.localStorage.setItem('statistics-tabs', JSON.stringify({type:this.type,interval:value}));
