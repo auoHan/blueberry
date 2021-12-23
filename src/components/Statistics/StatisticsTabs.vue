@@ -128,7 +128,7 @@ export default class StatisticsTabs extends Vue {
   }
 
   .van-dropdown-menu__title--active {
-    color: white;
+    color: #323233;
   }
 }
 </style>
