@@ -45,7 +45,6 @@ export default class Today extends Vue {
   //确定按钮
   saveTime(value:Date) {
     this.dateShow = false;
-    console.log(dayjs(value).format('YYYY/M/D'));
     this.$emit('date-picker', [this.dateShow, dayjs(value).format('YYYY/M/D')]);
   }
 

@@ -57,7 +57,6 @@ export default class AmountDetails extends Vue {
   weekDay = ['星期天', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
 
   removeRecord(id: string) {
-    console.log(id);
     Dialog.confirm({
       message: '确定删除吗？',
     })
@@ -73,10 +72,6 @@ export default class AmountDetails extends Vue {
   week(date: string) {
     return this.weekDay[dayjs(date).day()];
   }
-
-  /*mounted(){
-    console.log(this.resultObj);
-  }*/
 }
 </script>
 

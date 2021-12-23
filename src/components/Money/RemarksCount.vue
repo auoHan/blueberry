@@ -203,7 +203,6 @@ export default class RemarksCount extends Vue {
          return;
         } else if (this.sum.length > 7 && (this.sum.indexOf('+') > 0 || this.sum.indexOf('-') > 0)) {
           let lastSum = this.sum.indexOf('+') > 0 ? this.sum.split('+')[1] : this.sum.split('-')[1];
-          console.log(lastSum);
           if (lastSum.length < 7 || (lastSum.length >= 7 && lastSum.indexOf('.') > 0)) {
             if (this.sum.charAt(this.sum.length - 1) === '.') {
               this.sum += key;
@@ -299,7 +298,6 @@ export default class RemarksCount extends Vue {
       Toast('请输入金额！');
     }
     this.sum = '0';
-    console.log('完成');
   }
 }
 </script>
