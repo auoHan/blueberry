@@ -1,12 +1,18 @@
 <template>
   <div>
-    <van-tabs v-if="thisYear">
+    <van-tabs v-model="active" @click="onTab" @rendered="onRendered">
       <van-tab v-for="(week,index) in x" :title="week" :key="index">
         weekIndex:{{ index }}
         week:{{ week }}
+<!--        <router-view/>-->
       </van-tab>
     </van-tabs>
-    收入{{ $route.params.date }}
+    <!--<router-link replace :to="{
+    name:'income-month',
+    params:{
+    data:'2020-1月',
+    }
+  }">month</router-link>-->
   </div>
 </template>
 
@@ -28,33 +34,48 @@ dayjs.extend(isLeapYear);
 @Component({
   computed: {
     x() {
-      //console.log(this.$data.allWeek);
       let a = [];
       for (let i = 1; i <= this.$data.lastYearWeek; i++) {
-        //console.log(this.$data.lastYear+`年-第${i}周`);
-        a.push(this.$data.lastYear + `年-第${i}周`);
+        a.push(this.$data.lastYear + `-${i}周`);
       }
       for (let i = 1; i <= this.$data.thisYearWeek; i++) {
-        console.log(this.$data.thisYear + `年-第${i}周`);
-        a.push(this.$data.thisYear + `年-第${i}周`);
+        a.push(this.$data.thisYear + `-${i}周`);
+        console.log(this.$data.thisYearWeek);
       }
-      console.log(a);
       return a;
     }
   }
 })
 export default class Income extends Vue {
-  lastYear = dayjs((dayjs().year() - 1).toString()).year();
-  lastYearWeek = dayjs((dayjs().year() - 1).toString()).isoWeeksInYear();
   thisYear = dayjs().year();
   thisYearWeek = dayjs().isoWeek();
-
+  lastYear = dayjs((this.thisYear - 1).toString()).year();
+  lastYearWeek = dayjs(this.lastYear).isoWeeksInYear();
+  active = (this.thisYearWeek+this.lastYearWeek)-1
+  latestActive = (this.thisYearWeek+this.lastYearWeek)-1
   mounted() {
-    console.log(dayjs().subtract(1, 'year'));
+    //console.log(dayjs('2020').isoWeek(49));
+    // console.log(this.active);
+    console.log(dayjs('2021-12-27').isoWeek());
+  }
+  onTab(name:string,title: string){
+    console.log('name:',name,'title:',title);
+    //this.$router.replace({name:'income-week',params:{data:title}})
+  }
+  onRendered(name:number,title: string){
+    //name === this.latestActive && this.$router.replace({name:'income-week',params:{data:title}})
+    name === this.latestActive && console.log('name:',name,'title:',title);
   }
 }
 </script>
 
 <style lang="scss" scoped>
-
+::v-deep {
+  .van-tabs__line{
+    background-color:#333233;
+    width: 44px;
+    height: 4px;
+    bottom: 20px;
+  }
+}
 </style>

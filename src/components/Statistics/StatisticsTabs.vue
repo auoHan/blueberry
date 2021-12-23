@@ -37,15 +37,15 @@ export default class StatisticsTabs extends Vue {
   selectedInterval(value: string) {
     this.interval = value;
     window.localStorage.setItem('statistics-tabs', JSON.stringify({type:this.type,interval:value}));
-    this.$router.push({name: `${this.type}`, params: {date: `${this.interval}`}});
-    //this.$router.push({path: `/statistics/${this.type}/${this.interval}`});
+    this.$router.push({name: `${this.type}`, params: {date: `${value}`}});
+    //this.$router.replace({path: `/statistics/${this.type}/${this.interval}`});
   }
 
   onChangeType(value: string) {
     this.type = value;
     window.localStorage.setItem('statistics-tabs', JSON.stringify({type:value,interval:this.interval}));
-    this.$router.push({name: `${this.type}`, params: {date: `${this.interval}`}});
-    //this.$router.push({path: `/statistics/${this.type}/${this.interval}`});
+    this.$router.push({name: `${value}`, params: {date: `${this.interval}`}});
+    //this.$router.replace({path: `/statistics/${this.type}/${this.interval}`});
   }
 }
 </script>
