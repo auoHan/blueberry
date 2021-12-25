@@ -5,12 +5,7 @@ import Detail from '@/views/Detail.vue';
 import Statistics from '@/views/Statistics.vue';
 import NotFound from '@/pages/NotFound.vue';
 import ExpenseTags from '@/pages/AddExpenseTags.vue';
-import Expense from '@/pages/Statistics/expense/Expense.vue';
-import Income from '@/pages/Statistics/income/Income.vue';
-import ExpenseWeek from '@/pages/Statistics/expense/ExpenseWeek.vue';
-import ExpenseMonth from '@/pages/Statistics/expense/ExpenseMonth.vue';
-import IncomeWeek from '@/pages/Statistics/income/IncomeWeek.vue';
-import IncomeMonth from '@/pages/Statistics/income/IncomeMonth.vue';
+
 
 
 Vue.use(VueRouter);
@@ -38,57 +33,6 @@ const routes: Array<RouteConfig> = [
   {
     path: '/statistics',
     component: Statistics,
-    redirect: () => {
-      let statisticsTabs = JSON.parse(window.localStorage.getItem('statistics-tabs') || '{"type":"expense","interval":"week"}');
-      return `/statistics/${statisticsTabs.type}/${statisticsTabs.interval}`;
-    },
-    children: [
-      {
-        name: 'expense',
-        path: 'expense/:date',
-        component: Expense,
-      },
-      {
-        name: 'income',
-        path: 'income/:date',
-        component: Income
-      },
-      /*{
-        name: 'expense',
-        path: 'expense',
-        component: Expense,
-        children:[
-          {
-            name: 'expense-week',
-            path: 'week/:data',
-            component: ExpenseWeek,
-          },
-          {
-            name: 'expense-month',
-            path: 'month/:data',
-            component: ExpenseMonth,
-          },
-        ]
-      },
-
-      {
-        name: 'income',
-        path: 'income',
-        component: Income,
-        children:[
-          {
-            name: 'income-week',
-            path: 'week/:data',
-            component: IncomeWeek,
-          },
-          {
-            name: 'income-month',
-            path: 'month/:data',
-            component: IncomeMonth,
-          },
-        ]
-      },*/
-    ]
   },
   {
     path: '/money/expense',

@@ -24,7 +24,7 @@ import dayjs from 'dayjs';
   components: {DetailDatePicker, AmountDetails, DetailTabs, Layout}
 })
 export default class Detail extends Vue {
-  nowDate = dayjs(new Date()).format('YYYY/M');
+  nowDate = dayjs().format('YYYY/M');
 
   get records() {
     return this.$store.state.records;
@@ -64,8 +64,8 @@ export default class Detail extends Vue {
           expenseAmount += parseFloat(hashMoney[hashMoneyKey][i].amount);
         }
       }
-      dailyTotal[hashMoneyKey].income = Math.round(incomeAmount*100)/100;
-      dailyTotal[hashMoneyKey].expense = Math.round(expenseAmount*100)/100;
+      dailyTotal[hashMoneyKey].income = Math.round(incomeAmount * 100) / 100;
+      dailyTotal[hashMoneyKey].expense = Math.round(expenseAmount * 100) / 100;
       incomeAmount = 0;
       expenseAmount = 0;
     }
@@ -78,13 +78,13 @@ export default class Detail extends Vue {
     let monthlyTotal: TotalAmount = {};
     monthlyTotal[this.nowDate] = monthlyTotal[this.nowDate] || {};
     if (Object.keys(this.dailyResult.dailyTotal).length === 0) {
-      monthlyTotal[this.nowDate] = {expense: 0, income: 0}
+      monthlyTotal[this.nowDate] = {expense: 0, income: 0};
     } else {
       for (let dailyTotalKey in this.dailyResult.dailyTotal) {
         expenseAmount += this.dailyResult.dailyTotal[dailyTotalKey].expense;
         incomeAmount += this.dailyResult.dailyTotal[dailyTotalKey].income;
-        monthlyTotal[dayjs(dailyTotalKey).format('YYYY/M')].expense = Math.round(expenseAmount*100)/100;
-        monthlyTotal[dayjs(dailyTotalKey).format('YYYY/M')].income = Math.round(incomeAmount*100)/100;
+        monthlyTotal[dayjs(dailyTotalKey).format('YYYY/M')].expense = Math.round(expenseAmount * 100) / 100;
+        monthlyTotal[dayjs(dailyTotalKey).format('YYYY/M')].income = Math.round(incomeAmount * 100) / 100;
       }
     }
     return monthlyTotal;
@@ -93,10 +93,6 @@ export default class Detail extends Vue {
   beforeCreate(): void {
     this.$store.commit('fetchRecords');
   }
-
-  /*mounted() {
-    console.log(this.resultObj);
-  }*/
 }
 </script>
 
