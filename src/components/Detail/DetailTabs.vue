@@ -35,6 +35,7 @@ import {Component, Prop} from 'vue-property-decorator';
 import {Overlay} from 'vant';
 import DetailDatePicker from '@/components/Detail/DetailDatePicker.vue';
 import dayjs from 'dayjs';
+import {eventBus} from '@/main';
 
 Vue.use(Overlay);
 @Component({
@@ -46,6 +47,17 @@ export default class DetailsTabs extends Vue {
   dateShow = false;
   year = dayjs(this.nowDate).year();
   month = dayjs(this.nowDate).month() + 1;
+
+  beforeCreate(): void {
+    eventBus.$on('selectedAt',selectedAt=>{
+      this.year = dayjs(selectedAt).year();
+      this.month = dayjs(selectedAt).month() + 1;
+      this.$emit('update:now-date', selectedAt);
+    })
+  }
+  beforeDestroy () {
+    eventBus.$off('selectedAt')
+  }
 
   datePicker(event: boolean | any) {
     if (event instanceof Array) {

@@ -13,12 +13,12 @@
 <script lang="ts">
 import Vue from 'vue';
 import {Component} from 'vue-property-decorator';
+import dayjs from 'dayjs';
 import Layout from '@/components/Layout.vue';
 import DetailTabs from '@/components/Detail/DetailTabs.vue';
 import AmountDetails from '@/components/Detail/AmountDetails.vue';
 import DetailDatePicker from '@/components/Detail/DetailDatePicker.vue';
 import {clone} from '@/lib/clone';
-import dayjs from 'dayjs';
 
 @Component({
   components: {DetailDatePicker, AmountDetails, DetailTabs, Layout}

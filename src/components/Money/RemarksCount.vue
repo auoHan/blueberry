@@ -95,6 +95,7 @@ export default class RemarksCount extends Vue {
   beforeDestroy(): void {
     eventBus.$off('expense-show');
     eventBus.$off('income-show');
+    eventBus.$emit('selectedAt',dayjs(this.currentDate).format('YYYY/M'))
   }
 
   //鼠标点击或者手指按压按钮，改变当前按钮样式，其他按钮不变
