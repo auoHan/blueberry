@@ -49,14 +49,15 @@ export default class DetailsTabs extends Vue {
   month = dayjs(this.nowDate).month() + 1;
 
   beforeCreate(): void {
-    eventBus.$on('selectedAt',selectedAt=>{
+    eventBus.$on('selectedAt', (selectedAt) => {
       this.year = dayjs(selectedAt).year();
       this.month = dayjs(selectedAt).month() + 1;
       this.$emit('update:now-date', selectedAt);
-    })
+    });
   }
-  beforeDestroy () {
-    eventBus.$off('selectedAt')
+
+  beforeDestroy() {
+    eventBus.$off('selectedAt');
   }
 
   datePicker(event: boolean | any) {
@@ -124,7 +125,8 @@ export default class DetailsTabs extends Vue {
         padding-left: 32px;
         flex: 1;
       }
-      &.expense{
+
+      &.expense {
         flex: 1;
       }
     }
