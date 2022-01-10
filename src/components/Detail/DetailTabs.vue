@@ -49,7 +49,7 @@ export default class DetailsTabs extends Vue {
   month = dayjs(this.nowDate).month() + 1;
 
   beforeCreate(): void {
-    eventBus.$on('selectedAt', (selectedAt) => {
+    eventBus.$on('selectedAt', (selectedAt:string) => {
       this.year = dayjs(selectedAt).year();
       this.month = dayjs(selectedAt).month() + 1;
       this.$emit('update:now-date', selectedAt);
