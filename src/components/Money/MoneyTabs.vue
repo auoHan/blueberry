@@ -5,7 +5,7 @@
       <li :class="value==='-' && 'selected' " @click="selectType('-',0)">支出</li>
       <li :class="value==='+' && 'selected' " @click="selectType('+',1)">收入</li>
     </ul>
-    <router-link to="/detail" class="cancel">取消</router-link>
+      <router-link to="/detail" class="cancel">取消</router-link>
   </div>
 </template>
 
@@ -35,6 +35,7 @@ export default class MoneyTabs extends Vue {
   padding-top: 10px;
   width: 100%;
   background-color: $color-navBar;
+  position: relative;
 
   > ul {
     display: flex;
@@ -62,7 +63,7 @@ export default class MoneyTabs extends Vue {
 
   > .cancel {
     position: absolute;
-    right: 16px;
+    right: 28px;
     top: 28px;
     font-size: 14px;
     color: #333;
