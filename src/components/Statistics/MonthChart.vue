@@ -14,10 +14,11 @@ export default class MonthChart extends Vue {
   @Prop(Object) readonly option!:any
 
   mounted() {
-    const width = document.documentElement.clientWidth
+    let width = document.documentElement.clientWidth
+    if (width>500) width=500
     let container:any = this.$refs.container
     container.style.width = `${width}px`
-    container.style.height = `${width*1.2}px`
+    container.style.height = `${width}px`
     let chart = echarts.init(container,'walden')
     chart.setOption(this.option)
   }
